@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -58,12 +59,34 @@ public class autonomusCode extends LinearOpMode {
         }
 
         sleep(tIme);
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+    }
+
+    public void wind(DcMotor RPM, DcMotor LPM, String upDown, int tIme) {
+        if (upDown == "up") {
+            RPM.setPower(1);
+            LPM.setPower(1);
+        } else if (upDown == "down") {
+            RPM.setPower(-1);
+            LPM.setPower(-1);
+        }
+
+        sleep(tIme);
+
+        RPM.setPower(0);
+        LPM.setPower(0);
     }
 
         DcMotor FR;
         DcMotor FL;
         DcMotor BR;
         DcMotor BL;
+        DcMotor RPM;
+        DcMotor LPM;
 
     @Override
 
@@ -99,6 +122,7 @@ public class autonomusCode extends LinearOpMode {
 
         RPM.setPower(0);
         LPM.setPower(0);
+
     }
 
 }
