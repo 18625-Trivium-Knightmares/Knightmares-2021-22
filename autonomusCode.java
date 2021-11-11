@@ -30,8 +30,8 @@ import java.util.List;
 @Autonomous
 
 public class autonomusCode extends LinearOpMode {
-    
-    /*voria and tensorFlow*/
+
+    /* voria and tensorFlow */
     public static final String TAG = "Vuforia Navigation Sample";
 
     OpenGLMatrix lastLocation = null;
@@ -40,7 +40,7 @@ public class autonomusCode extends LinearOpMode {
 
     private TFObjectDetector tfod;
     /* ... */
-    
+
     public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, int power){
         FR.setPower(power);
         FL.setPower(power);
@@ -97,17 +97,21 @@ public class autonomusCode extends LinearOpMode {
     @Override
 
     public void runOpMode () throws InterruptedException {
-        
+
         /* voforia and tensorFlow */
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        
+
             /* vuforia key */
         parameters.vuforiaLicenseKey = "AYHN1aL/////AAABmYrrSlCefkltl6fJdzJbMmsrPxVWJT3oTh/1nwkBjsa2mqa3lzXGv8PSdvit2XJmvJSo4yQbLZuJ/8GGiLyOUkxC+MSR6Xpc7zCnnWH3uhT/+PyaxU2+nrn67S3mxjLSC1oGXvdcbLhkoSDDyJ53K3sF4X0YdwtP9Jlg+i1RpJczM0t4Z1J2mkhufIpYCUgf4kqM4ie3T2Q/9EYkLgh1qlrM1yzTv8553fyxGtvLUc2rHWdqzuDuc32sQ7rQ81ZZNjKSjuesFKL2W7Fx2Pk660M7cWr6obPOa0KmL2NylbtEnP3RP0hQqBZ+6ZqRrWl6bAHZd0wjlxfnk+bzaIatkK2l3u2O057pHNg9vFE5CcsV";
-            /* ... */
-        
-        /* ... */
+
+            /* decide camera direction */
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+
         FL = hardwareMap.dcMotor.get("Front Left");
         FR = hardwareMap.dcMotor.get("Front Right");
         BL = hardwareMap.dcMotor.get("Back Left");
