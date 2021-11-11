@@ -123,26 +123,30 @@ public class autonomusCode extends LinearOpMode {
         LPM.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
-
+        
+        wind(RPM, LPM, "up", 1000);
         sleep(1000);
+        wind(RPM, LPM, "down", 1000);
 
-        RPM.setPower(1);
-        LPM.setPower(1);
-
-        sleep(1000);
-
-        RPM.setPower(0);
-        LPM.setPower(0);
-
-        sleep(1000);
-
-        RPM.setPower(-1);
-        LPM.setPower(-1);
-
-        sleep(1000);
-
-        RPM.setPower(0);
-        LPM.setPower(0);
+//        sleep(1000);
+//
+//        RPM.setPower(1);
+//        LPM.setPower(1);
+//
+//        sleep(1000);
+//
+//        RPM.setPower(0);
+//        LPM.setPower(0);
+//
+//        sleep(1000);
+//
+//        RPM.setPower(-1);
+//        LPM.setPower(-1);
+//
+//        sleep(1000);
+//
+//        RPM.setPower(0);
+//        LPM.setPower(0);
 
     }
 
