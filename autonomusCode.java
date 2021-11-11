@@ -68,16 +68,37 @@ public class autonomusCode extends LinearOpMode {
     @Override
 
     public void runOpMode () throws InterruptedException {
-        FL = hardwareMap.dcMotor.get("Front Left"); //tbd
-        FR = hardwareMap.dcMotor.get("Front Right"); //tbd
-        BL = hardwareMap.dcMotor.get("Back Left"); //tbd
-        BR = hardwareMap.dcMotor.get("Back Right"); //tbd
+        FL = hardwareMap.dcMotor.get("Front Left");
+        FR = hardwareMap.dcMotor.get("Front Right");
+        BL = hardwareMap.dcMotor.get("Back Left");
+        BR = hardwareMap.dcMotor.get("Back Right");
+        RPM = hardwareMap.dcMotor.get("Right Pulley Motor");
+        LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
+        LPM.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
+        sleep(1000);
 
+        RPM.setPower(1);
+        LPM.setPower(1);
+
+        sleep(1000);
+
+        RPM.setPower(0);
+        LPM.setPower(0);
+
+        sleep(1000);
+
+        RPM.setPower(-1);
+        LPM.setPower(-1);
+
+        sleep(1000);
+
+        RPM.setPower(0);
+        LPM.setPower(0);
     }
 
 }
