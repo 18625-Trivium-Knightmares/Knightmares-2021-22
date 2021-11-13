@@ -67,7 +67,8 @@ public class autonomusCode extends LinearOpMode {
     private TFObjectDetector tfod;
 
 
-    // methods
+
+    // move foward or backward
     public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, int power){
         FR.setPower(power);
         FL.setPower(power);
@@ -81,6 +82,7 @@ public class autonomusCode extends LinearOpMode {
         BR.setPower(0);
         BL.setPower(0);
     }
+    // turn
     public void turn(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, String direction) {
         if (direction == "right") {
             FL.setPower(1);
@@ -103,7 +105,7 @@ public class autonomusCode extends LinearOpMode {
         BL.setPower(0);
         BR.setPower(0);
     }
-
+    // pull claw up or down
     public void wind(DcMotor RPM, DcMotor LPM, String upDown, int tIme) {
         if (upDown == "up") {
             RPM.setPower(1);
@@ -117,6 +119,31 @@ public class autonomusCode extends LinearOpMode {
 
         RPM.setPower(0);
         LPM.setPower(0);
+    }
+    // some encoders
+    public void encoders(int targetToPlace) {
+        FL.setTargetPosition(targetToPlace);
+        FR.setTargetPosition(targetToPlace);
+        BL.setTargetPosition(targetToPlace);
+        BR.setTargetPosition(targetToPlace);
+
+        FL.setPower(1);
+        FR.setPower(1);
+        BL.setPower(1);
+        BR.setPower(1);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
     }
 
         DcMotor FR, FL, BR, BL, RPM, LPM;
