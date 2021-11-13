@@ -27,10 +27,27 @@ public class teleOpCode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            FR.setPower(gamepad1.right_stick_y);
-            FL.setPower(gamepad1.left_stick_y);
-            BR.setPower(gamepad1.right_stick_y);
-            BL.setPower(gamepad1.left_stick_y);
+            if (gamepad1.left_stick_y != 0) {
+                FR.setPower(gamepad1.left_stick_y);
+                FL.setPower(gamepad1.left_stick_y);
+                BR.setPower(gamepad1.left_stick_y);
+                BL.setPower(gamepad1.left_stick_y);
+            }
+            if (gamepad1.left_stick_x != 0) {
+                FR.setPower(-gamepad1.left_stick_x);
+                BR.setPower(-gamepad1.left_stick_x);
+                FL.setPower(gamepad1.left_stick_x);
+                BL.setPower(gamepad1.left_stick_x);
+            }
+            if (gamepad1.b) {
+                RPM.setPower(-1);
+                LPM.setPower(-1);
+            }
+            if (gamepad1.a) {
+                RPM.setPower(1);
+                LPM.setPower(1);
+            }
+            
         }
     }
 }
