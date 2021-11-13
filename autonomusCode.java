@@ -214,7 +214,7 @@ public class autonomusCode extends LinearOpMode {
         BR = hardwareMap.dcMotor.get("Back Right");
         RPM = hardwareMap.dcMotor.get("Right Pulley Motor");
         LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
-        DCM = hardwareMap.dcMotor.get("Duck Carousel");
+        DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
