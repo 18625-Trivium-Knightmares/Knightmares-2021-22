@@ -20,7 +20,7 @@ public class teleOpCode extends LinearOpMode {
         BL = hardwareMap.dcMotor.get("Back Left");
         RPM = hardwareMap.dcMotor.get("Right Pulley System");
         LPM = hardwareMap.dcMotor.get("Left Pulley System");
-        DCM = hardwareMap.dcMotor.get("Duck Carousel");
+        DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
