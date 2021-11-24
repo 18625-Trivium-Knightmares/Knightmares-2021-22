@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp
 
 public class teleOpCode extends LinearOpMode {
-    DcMotor FR, FL, BR, BL, RPM, LPM, DCM;
+    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
     @Override
 
@@ -21,6 +21,7 @@ public class teleOpCode extends LinearOpMode {
         RPM = hardwareMap.dcMotor.get("Right Pulley System");
         LPM = hardwareMap.dcMotor.get("Left Pulley System");
         DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
+        CM = hardwareMap.dcMotor.get("Claw Motor");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
@@ -43,6 +44,12 @@ public class teleOpCode extends LinearOpMode {
             }
             while (gamepad1.y) {
                 DCM.setPower(1);
+            }
+            while (gamepad1.right_trigger != 0) {
+                CM.setPower(1);
+            }
+            while (gamepad1.left_trigger != 0) {
+                CM.setPower(-1);
             }
 
         }
