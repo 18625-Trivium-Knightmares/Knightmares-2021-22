@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+/* gus is so hot */package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -146,16 +146,24 @@ public class autonomusCode extends LinearOpMode {
         BR.setPower(0);
     }
     // duck carousel spinner
-
     public void spinDuck(DcMotor DCM, int tIme) {
         DCM.setPower(1);
-        
+
         sleep(tIme);
-        
+
         DCM.setPower(0);
     }
+    // claw
+    public void claw(DcMotor CM, int tIme, String closeOpen) {
+        if (closeOpen == "close") { CM.setPower(1); }
+        else if (closeOpen == "open") { CM.setPower(-1); }
 
-        DcMotor FR, FL, BR, BL, RPM, LPM, DCM;
+        sleep(tIme);
+
+        CM.setPower(0);
+    }
+
+        DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
     @Override
 
@@ -215,6 +223,7 @@ public class autonomusCode extends LinearOpMode {
         RPM = hardwareMap.dcMotor.get("Right Pulley Motor");
         LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
         DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
+        CM = hardwareMap.dcMotor.get("Claw Motor");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
