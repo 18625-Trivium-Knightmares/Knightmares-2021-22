@@ -115,12 +115,13 @@ public class autonomusCode extends LinearOpMode {
             System.out.println(direction + " is not an option");
         }
 
-        sleep(tIme);
-
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
+        if (tIme != 0) {
+            sleep(tIme);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+        }
     }
     // pull claw up or down
     public void wind(DcMotor RPM, DcMotor LPM, String upDown, int tIme) {
@@ -343,10 +344,31 @@ public class autonomusCode extends LinearOpMode {
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
-                            if (recognition.getTop() > 5) {
-                                goFoward(FR, FL, BR, BL, 0);
-                            } else if (recognition.getBottom() > -5) {
-                                goFoward(FR, FL, BR, BL, 0);
+                            if (recognition.getLabel().equals("Cube")) {
+                                while (recognition.getTop() != 0) {
+                                    if (recognition.getTop() > 0) {
+                                        goFoward(FR, FL, BR, BL, 0);
+                                    } else if (recognition.getTop() < 0) {
+                                        goBackward(FR, FL, BR, BL, 0);
+                                    } else {
+                                        FR.setPower(0);
+                                        FL.setPower(0);
+                                        BR.setPower(0);
+                                        BL.setPower(0);
+                                    }
+                                }
+                                while (recognition.getRight() != 0) {
+                                    if (recognition.getRight() > 0) {
+                                        turn(FR, FL, BR, BL, 0, "right");
+                                    } else if (recognition.getRight() < 0) {
+                                        turn(FR, FL, BR, BL, 0, "left");
+                                    } else {
+                                        FR.setPower(0);
+                                        FL.setPower(0);
+                                        BR.setPower(0);
+                                        BL.setPower(0);
+                                    }
+                                }
                             }
                             i++;
                         }
