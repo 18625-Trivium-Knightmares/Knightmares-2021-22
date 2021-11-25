@@ -69,18 +69,35 @@ public class autonomusCode extends LinearOpMode {
 
 
     // move foward or backward
-    public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, int power){
-        FR.setPower(power);
-        FL.setPower(power);
-        BR.setPower(power);
-        BL.setPower(power);
+    public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme){
+        FR.setPower(1);
+        FL.setPower(1);
+        BR.setPower(1);
+        BL.setPower(1);
 
-        sleep(tIme);
+        if (tIme != 0) {
+            sleep(tIme);
 
-        FR.setPower(0);
-        FL.setPower(0);
-        BR.setPower(0);
-        BL.setPower(0);
+            FR.setPower(0);
+            FL.setPower(0);
+            BR.setPower(0);
+            BL.setPower(0);
+        }
+    }
+    public void goBackward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme){
+        FR.setPower(-1);
+        FL.setPower(-1);
+        BR.setPower(-1);
+        BL.setPower(-1);
+
+        if (tIme != 0) {
+            sleep(tIme);
+
+            FR.setPower(0);
+            FL.setPower(0);
+            BR.setPower(0);
+            BL.setPower(0);
+        }
     }
     // turn
     public void turn(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, String direction) {
@@ -326,6 +343,11 @@ public class autonomusCode extends LinearOpMode {
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
+                            if (recognition.getTop() > 5) {
+                                goFoward(FR, FL, BR, BL, 0);
+                            } else if (recognition.getBottom() > -5) {
+                                goFoward(FR, FL, BR, BL, 0);
+                            }
                             i++;
                         }
                         telemetry.update();
