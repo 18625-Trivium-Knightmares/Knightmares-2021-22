@@ -3,11 +3,11 @@
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -23,15 +23,16 @@ import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-@Autonomous
 
+@Autonomous
 public class autonomusCode extends LinearOpMode {
 
-    // vuforia and tensorflow
+    // vuforia key
+    private static final String VUFORIA_KEY = "AYHN1aL/////AAABmYrrSlCefkltl6fJdzJbMmsrPxVWJT3oTh/1nwkBjsa2mqa3lzXGv8PSdvit2XJmvJSo4yQbLZuJ/8GGiLyOUkxC+MSR6Xpc7zCnnWH3uhT/+PyaxU2+nrn67S3mxjLSC1oGXvdcbLhkoSDDyJ53K3sF4X0YdwtP9Jlg+i1RpJczM0t4Z1J2mkhufIpYCUgf4kqM4ie3T2Q/9EYkLgh1qlrM1yzTv8553fyxGtvLUc2rHWdqzuDuc32sQ7rQ81ZZNjKSjuesFKL2W7Fx2Pk660M7cWr6obPOa0KmL2NylbtEnP3RP0hQqBZ+6ZqRrWl6bAHZd0wjlxfnk+bzaIatkK2l3u2O057pHNg9vFE5CcsV";
 
+    // tensorflow objects
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
             "Ball",
@@ -40,36 +41,28 @@ public class autonomusCode extends LinearOpMode {
             "Marker"
     };
 
-        // camera directions
-    private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = false;
+    // measurements
+    private static final float mmPerInch = 25.4f;
+    private static final float mmTargetHeight = 6 * mmPerInch;
+    private static final float halfField = 72 * mmPerInch;
+    private static final float halfTile = 12 * mmPerInch;
+    private static final float oneAndHalfTile = 36 * mmPerInch;
 
-        // vuforia key
-    private static final String VUFORIA_KEY = "AYHN1aL/////AAABmYrrSlCefkltl6fJdzJbMmsrPxVWJT3oTh/1nwkBjsa2mqa3lzXGv8PSdvit2XJmvJSo4yQbLZuJ/8GGiLyOUkxC+MSR6Xpc7zCnnWH3uhT/+PyaxU2+nrn67S3mxjLSC1oGXvdcbLhkoSDDyJ53K3sF4X0YdwtP9Jlg+i1RpJczM0t4Z1J2mkhufIpYCUgf4kqM4ie3T2Q/9EYkLgh1qlrM1yzTv8553fyxGtvLUc2rHWdqzuDuc32sQ7rQ81ZZNjKSjuesFKL2W7Fx2Pk660M7cWr6obPOa0KmL2NylbtEnP3RP0hQqBZ+6ZqRrWl6bAHZd0wjlxfnk+bzaIatkK2l3u2O057pHNg9vFE5CcsV";
-
-        // measurements
-    private static final float mmPerInch        = 25.4f;
-    private static final float mmTargetHeight   = 6 * mmPerInch;
-    private static final float halfField        = 72 * mmPerInch;
-    private static final float halfTile         = 12 * mmPerInch;
-    private static final float oneAndHalfTile   = 36 * mmPerInch;
-
-        // Class Members
+    // Class Members
     private OpenGLMatrix lastLocation = null;
-    private VuforiaLocalizer vuforia  = null;
-    private VuforiaTrackables targets = null ;
+    private VuforiaLocalizer vuforia = null;
+    private VuforiaTrackables targets = null;
+    private WebcamName webcam = null;
 
     private boolean targetVisible = false;
-    private float phoneXRotate    = 0;
-    private float phoneYRotate    = 0;
-    private float phoneZRotate    = 0;
+    private float phoneXRotate = 0;
+    private float phoneYRotate = 0;
+    private float phoneZRotate = 0;
 
     private TFObjectDetector tfod;
 
-
-
     // move foward or backward
-    public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme){
+    public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme) {
         FR.setPower(1);
         FL.setPower(1);
         BR.setPower(1);
@@ -84,7 +77,8 @@ public class autonomusCode extends LinearOpMode {
             BL.setPower(0);
         }
     }
-    public void goBackward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme){
+
+    public void goBackward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme) {
         FR.setPower(-1);
         FL.setPower(-1);
         BR.setPower(-1);
@@ -99,6 +93,7 @@ public class autonomusCode extends LinearOpMode {
             BL.setPower(0);
         }
     }
+
     // turn
     public void turn(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, String direction) {
         if (direction == "right") {
@@ -123,6 +118,7 @@ public class autonomusCode extends LinearOpMode {
             BR.setPower(0);
         }
     }
+
     // pull claw up or down
     public void wind(DcMotor RPM, DcMotor LPM, String upDown, int tIme) {
         if (upDown == "up") {
@@ -138,6 +134,7 @@ public class autonomusCode extends LinearOpMode {
         RPM.setPower(0);
         LPM.setPower(0);
     }
+
     // some encoders
     public void encoders(int targetToPlace) {
         FL.setTargetPosition(targetToPlace);
@@ -163,6 +160,7 @@ public class autonomusCode extends LinearOpMode {
         BL.setPower(0);
         BR.setPower(0);
     }
+
     // duck carousel spinner
     public void spinDuck(DcMotor DCM, int tIme) {
         DCM.setPower(1);
@@ -171,69 +169,72 @@ public class autonomusCode extends LinearOpMode {
 
         DCM.setPower(0);
     }
+
     // claw
     public void claw(DcMotor CM, int tIme, String closeOpen) {
-        if (closeOpen == "close") { CM.setPower(1); }
-        else if (closeOpen == "open") { CM.setPower(-1); }
+        if (closeOpen == "close") {
+            CM.setPower(1);
+        } else if (closeOpen == "open") {
+            CM.setPower(-1);
+        }
 
         sleep(tIme);
 
         CM.setPower(0);
     }
 
-        DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
+    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
     @Override
+    public void runOpMode() throws InterruptedException {
 
-    public void runOpMode () throws InterruptedException {
-
-        // vuforia and tensorflow
         initVuforia();
         initTfod();
 
-        // camera stuff
+        // Our camera
+        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        // Camera stuff
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
+        // Vuforia stuff
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = CAMERA_CHOICE;
+
+        // Camera being used
+        parameters.cameraName = webcam;
+
         parameters.useExtendedTracking = false;
 
+        //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
+        // Load the data sets for the trackable objects.
         targets = this.vuforia.loadTrackablesFromAsset("FreightFrenzy");
-
         List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables.addAll(targets);
+        allTrackables.addAll(targets);
 
-        identifyTarget(0, "Blue Storage", -halfField, oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(1, "Blue Alliance Wall", halfTile, halfField, mmTargetHeight, 90, 0, 0);
-        identifyTarget(2, "Red Storage", -halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(3, "Red Alliance Wall", halfTile, -halfField, mmTargetHeight, 90, 0, 180);
+        // Targets
+        identifyTarget(0, "Blue Storage",       -halfField,  oneAndHalfTile, mmTargetHeight, 90, 0, 90);
+        identifyTarget(1, "Blue Alliance Wall",  halfTile,   halfField,      mmTargetHeight, 90, 0, 0);
+        identifyTarget(2, "Red Storage",        -halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, 90);
+        identifyTarget(3, "Red Alliance Wall",   halfTile,  -halfField,      mmTargetHeight, 90, 0, 180);
 
-        if (CAMERA_CHOICE == BACK) {
-            phoneYRotate = -90;
-        } else {
-            phoneYRotate = 90;
-        }
+        final float CAMERA_FORWARD_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
+        final float CAMERA_VERTICAL_DISPLACEMENT = 6.0f * mmPerInch;   // eg: Camera is 6 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
 
-        if (PHONE_IS_PORTRAIT) {
-            phoneXRotate = 90;
-        }
-
-        final float CAMERA_FORWARD_DISPLACEMENT = 0.0f * mmPerInch;
-        final float CAMERA_VERTICAL_DISPLACEMENT = 6.0f * mmPerInch;
-        final float CAMERA_LEFT_DISPLACEMENT = 0.0f * mmPerInch;
-
-        OpenGLMatrix robotFromCamera = OpenGLMatrix
+        OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
 
+        // Some extra vuforia stuff
         for (VuforiaTrackable trackable : allTrackables) {
-            ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(parameters.cameraName, cameraLocationOnRobot);
         }
 
-
+        // All motors
         FL = hardwareMap.dcMotor.get("Front Left");
         FR = hardwareMap.dcMotor.get("Front Right");
         BL = hardwareMap.dcMotor.get("Back Left");
@@ -248,41 +249,17 @@ public class autonomusCode extends LinearOpMode {
 
         waitForStart();
 
-        wind(RPM, LPM, "up", 1000);
-        sleep(1000);
-        wind(RPM, LPM, "down", 1000);
-
-//        sleep(1000);
-//
-//        RPM.setPower(1);
-//        LPM.setPower(1);
-//
-//        sleep(1000);
-//
-//        RPM.setPower(0);
-//        LPM.setPower(0);
-//
-//        sleep(1000);
-//
-//        RPM.setPower(-1);
-//        LPM.setPower(-1);
-//
-//        sleep(1000);
-//
-//        RPM.setPower(0);
-//        LPM.setPower(0);
         targets.activate();
         while (!isStopRequested()) {
 
-            // check all the trackable targets to see which one (if any) is visible.
+            // Find visible trackables
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
                     targetVisible = true;
 
-                    // getUpdatedRobotLocation() will return null if no new information is available since
-                    // the last time that call was made, or if the trackable is not currently visible.
+                    // Updates on location
                     OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
                     if (robotLocationTransform != null) {
                         lastLocation = robotLocationTransform;
@@ -330,13 +307,9 @@ public class autonomusCode extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
-
-                        // step through the list of recognitions and display boundary info.
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
                             telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
@@ -344,32 +317,6 @@ public class autonomusCode extends LinearOpMode {
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
-                            if (recognition.getLabel().equals("Cube")) {
-                                while (recognition.getTop() != 0) {
-                                    if (recognition.getTop() > 0) {
-                                        goFoward(FR, FL, BR, BL, 0);
-                                    } else if (recognition.getTop() < 0) {
-                                        goBackward(FR, FL, BR, BL, 0);
-                                    } else {
-                                        FR.setPower(0);
-                                        FL.setPower(0);
-                                        BR.setPower(0);
-                                        BL.setPower(0);
-                                    }
-                                }
-                                while (recognition.getRight() != 0) {
-                                    if (recognition.getRight() > 0) {
-                                        turn(FR, FL, BR, BL, 0, "right");
-                                    } else if (recognition.getRight() < 0) {
-                                        turn(FR, FL, BR, BL, 0, "left");
-                                    } else {
-                                        FR.setPower(0);
-                                        FL.setPower(0);
-                                        BR.setPower(0);
-                                        BL.setPower(0);
-                                    }
-                                }
-                            }
                             i++;
                         }
                         telemetry.update();
@@ -393,7 +340,7 @@ public class autonomusCode extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -412,5 +359,4 @@ public class autonomusCode extends LinearOpMode {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
-
 }
