@@ -1,4 +1,4 @@
-/* gus is so hot */package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -62,7 +62,7 @@ public class autonomusCode extends LinearOpMode {
     private TFObjectDetector tfod;
 
     // move foward or backward
-    public void goFoward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme) {
+    public void goFoward(int tIme) {
         FR.setPower(1);
         FL.setPower(1);
         BR.setPower(1);
@@ -78,7 +78,7 @@ public class autonomusCode extends LinearOpMode {
         }
     }
 
-    public void goBackward(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme) {
+    public void goBackward(int tIme) {
         FR.setPower(-1);
         FL.setPower(-1);
         BR.setPower(-1);
@@ -95,7 +95,7 @@ public class autonomusCode extends LinearOpMode {
     }
 
     // turn
-    public void turn(DcMotor FR, DcMotor FL, DcMotor BR, DcMotor BL, int tIme, String direction) {
+    public void turn(int tIme, String direction) {
         if (direction == "right") {
             FL.setPower(1);
             BL.setPower(1);
@@ -120,7 +120,7 @@ public class autonomusCode extends LinearOpMode {
     }
 
     // pull claw up or down
-    public void wind(DcMotor RPM, DcMotor LPM, String upDown, int tIme) {
+    public void wind(String upDown, int tIme) {
         if (upDown == "up") {
             RPM.setPower(1);
             LPM.setPower(1);
@@ -162,7 +162,7 @@ public class autonomusCode extends LinearOpMode {
     }
 
     // duck carousel spinner
-    public void spinDuck(DcMotor DCM, int tIme) {
+    public void spinDuck(int tIme) {
         DCM.setPower(1);
 
         sleep(tIme);
@@ -171,7 +171,7 @@ public class autonomusCode extends LinearOpMode {
     }
 
     // claw
-    public void claw(DcMotor CM, int tIme, String closeOpen) {
+    public void claw(int tIme, String closeOpen) {
         if (closeOpen == "close") {
             CM.setPower(1);
         } else if (closeOpen == "open") {
