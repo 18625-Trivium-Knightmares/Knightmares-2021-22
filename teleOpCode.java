@@ -59,8 +59,111 @@ public class teleOpCode extends LinearOpMode {
     private float phoneXRotate = 0;
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
+    private boolean clawEmpty = true;
+    private boolean clawDown = true;
 
     private TFObjectDetector tfod;
+
+    // move foward or backward
+    public void goFoward(int tIme) {
+        FR.setPower(1);
+        FL.setPower(1);
+        BR.setPower(1);
+        BL.setPower(1);
+
+        if (tIme != 0) {
+            sleep(tIme);
+
+            FR.setPower(0);
+            FL.setPower(0);
+            BR.setPower(0);
+            BL.setPower(0);
+        }
+    }
+
+    public void goBackward(int tIme) {
+        FR.setPower(-1);
+        FL.setPower(-1);
+        BR.setPower(-1);
+        BL.setPower(-1);
+
+        if (tIme != 0) {
+            sleep(tIme);
+
+            FR.setPower(0);
+            FL.setPower(0);
+            BR.setPower(0);
+            BL.setPower(0);
+        }
+    }
+
+    // turn
+    public void turn(int tIme, String direction) {
+        if (direction == "right") {
+            FL.setPower(1);
+            BL.setPower(1);
+            FR.setPower(0);
+            BR.setPower(0);
+        } else if (direction == "left") {
+            FR.setPower(1);
+            BR.setPower(1);
+            FL.setPower(0);
+            BL.setPower(0);
+        } else {
+            System.out.println(direction + " is not an option");
+        }
+
+        if (tIme != 0) {
+            sleep(tIme);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+        }
+    }
+
+    // pull claw up or down
+    public void wind(String upDown, int tIme) {
+        if (upDown == "up") {
+            RPM.setPower(1);
+            LPM.setPower(1);
+            clawDown = false;
+        } else if (upDown == "down") {
+            RPM.setPower(-1);
+            LPM.setPower(-1);
+            clawDown = true;
+        }
+
+        if (tIme != 0) {
+            sleep(tIme);
+            RPM.setPower(0);
+            LPM.setPower(0);
+        }
+    }
+    
+    // duck carousel spinner
+    public void spinDuck(int tIme) {
+        DCM.setPower(1);
+
+        sleep(tIme);
+
+        DCM.setPower(0);
+    }
+
+    // claw
+    public void claw(int tIme, String closeOpen) {
+        if (closeOpen == "close") {
+            CM.setPower(1);
+            clawEmpty = false;
+        } else if (closeOpen == "open") {
+            CM.setPower(-1);
+            clawDown = true;
+        }
+
+        sleep(tIme);
+
+        CM.setPower(0);
+    }
 
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
@@ -113,7 +216,7 @@ public class teleOpCode extends LinearOpMode {
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(parameters.cameraName, cameraLocationOnRobot);
         }
-        
+
         FR = hardwareMap.dcMotor.get("Front Right");
         FL = hardwareMap.dcMotor.get("Front Left");
         BR = hardwareMap.dcMotor.get("Back Right");
