@@ -59,8 +59,6 @@ public class teleOpCode extends LinearOpMode {
     private float phoneXRotate = 0;
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
-    private boolean clawEmpty = true;
-    private boolean clawDown = true;
 
     private TFObjectDetector tfod;
 
@@ -127,11 +125,9 @@ public class teleOpCode extends LinearOpMode {
         if (upDown == "up") {
             RPM.setPower(1);
             LPM.setPower(1);
-            clawDown = false;
         } else if (upDown == "down") {
             RPM.setPower(-1);
             LPM.setPower(-1);
-            clawDown = true;
         }
 
         if (tIme != 0) {
@@ -140,7 +136,7 @@ public class teleOpCode extends LinearOpMode {
             LPM.setPower(0);
         }
     }
-    
+
     // duck carousel spinner
     public void spinDuck(int tIme) {
         DCM.setPower(1);
@@ -151,16 +147,14 @@ public class teleOpCode extends LinearOpMode {
     }
 
     // claw
-    public void claw(int tIme, String closeOpen) {
+    public void claw(String closeOpen) {
         if (closeOpen == "close") {
             CM.setPower(1);
-            clawEmpty = false;
         } else if (closeOpen == "open") {
             CM.setPower(-1);
-            clawDown = true;
         }
 
-        sleep(tIme);
+        sleep(500);
 
         CM.setPower(0);
     }
@@ -231,32 +225,6 @@ public class teleOpCode extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            FR.setPower(gamepad1.right_stick_y);
-            BR.setPower(gamepad1.right_stick_y);
-            FL.setPower(gamepad1.left_stick_y);
-            BL.setPower(gamepad1.left_stick_y);
-
-            while (gamepad1.b) {
-                RPM.setPower(-1);
-                LPM.setPower(-1);
-            }
-            while (gamepad1.a) {
-                RPM.setPower(1);
-                LPM.setPower(1);
-            }
-            while (gamepad1.y) {
-                DCM.setPower(1);
-            }
-            while (gamepad1.right_trigger != 0) {
-                CM.setPower(1);
-            }
-            while (gamepad1.left_trigger != 0) {
-                CM.setPower(-1);
-            }
-
-        }
-
         targets.activate();
         while (!isStopRequested()) {
 
@@ -314,20 +282,70 @@ public class teleOpCode extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                if (tfod != null) {
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        int i = 0;
-                        for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                            i++;
+                // move robot
+                FR.setPower(gamepad1.right_stick_y);
+                BR.setPower(gamepad1.right_stick_y);
+                FL.setPower(gamepad1.left_stick_y);
+                BL.setPower(gamepad1.left_stick_y);
+
+                // pick up things
+                if (gamepad1.a) {
+                   claw("close");
+                   wind("up", 500);
+                }
+                
+                // drop object
+                if (gamepad1.b) {
+                    claw("open");
+                }
+                
+                // bring claw down
+                while (gamepad1.left_trigger > 0) {
+                    wind("down", 0);
+                }
+                
+                // bring claw up
+                while(gamepad1.right_trigger > 0) {
+                    wind("up", 0);
+                }
+                
+                if (gamepad1.dpad_up) {
+                    if (tfod != null) {
+                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                        if (updatedRecognitions != null) {
+                            telemetry.addData("# Object Detected", updatedRecognitions.size());
+                            int i = 0;
+                            for (Recognition recognition : updatedRecognitions) {
+                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                        recognition.getLeft(), recognition.getTop());
+                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                        recognition.getRight(), recognition.getBottom());
+                                
+                                if (recognition.getLabel().equals("Cube")) {
+                                    
+                                    // center it on camera
+                                    while (recognition.getRight() != 0) {
+                                        if (recognition.getRight() > 0) {
+                                            turn(0, "right");
+                                        } else if (recognition.getRight() < 0) {
+                                            turn(0, "left");
+                                        }
+                                    }
+                                    
+                                    // go foward to get it into claw
+                                    while (recognition.getTop() > -5) {
+                                        goFoward(0);
+                                    }
+                                    
+                                    // grab object
+                                    claw("close");
+                                    wind("up", 500);
+                                }
+                                i++;
+                            }
+                            telemetry.update();
                         }
-                        telemetry.update();
                     }
                 }
             }
