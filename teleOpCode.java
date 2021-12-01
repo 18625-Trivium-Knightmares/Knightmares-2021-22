@@ -293,22 +293,23 @@ public class teleOpCode extends LinearOpMode {
                    claw("close");
                    wind("up", 500);
                 }
-                
+
                 // drop object
                 if (gamepad1.b) {
                     claw("open");
                 }
-                
+
                 // bring claw down
                 while (gamepad1.left_trigger > 0) {
                     wind("down", 0);
                 }
-                
+
                 // bring claw up
                 while(gamepad1.right_trigger > 0) {
                     wind("up", 0);
                 }
-                
+
+                // to grab the nearest cube
                 if (gamepad1.dpad_up) {
                     if (tfod != null) {
                         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
@@ -321,9 +322,9 @@ public class teleOpCode extends LinearOpMode {
                                         recognition.getLeft(), recognition.getTop());
                                 telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                         recognition.getRight(), recognition.getBottom());
-                                
+
                                 if (recognition.getLabel().equals("Cube")) {
-                                    
+
                                     // center it on camera
                                     while (recognition.getRight() != 0) {
                                         if (recognition.getRight() > 0) {
@@ -332,12 +333,94 @@ public class teleOpCode extends LinearOpMode {
                                             turn(0, "left");
                                         }
                                     }
-                                    
+
                                     // go foward to get it into claw
                                     while (recognition.getTop() > -5) {
                                         goFoward(0);
                                     }
-                                    
+
+                                    // grab object
+                                    claw("close");
+                                    wind("up", 500);
+                                }
+                                i++;
+                            }
+                            telemetry.update();
+                        }
+                    }
+                }
+
+                // to grab the nearest ball
+                if (gamepad1.dpad_left) {
+                    if (tfod != null) {
+                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                        if (updatedRecognitions != null) {
+                            telemetry.addData("# Object Detected", updatedRecognitions.size());
+                            int i = 0;
+                            for (Recognition recognition : updatedRecognitions) {
+                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                        recognition.getLeft(), recognition.getTop());
+                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                        recognition.getRight(), recognition.getBottom());
+
+                                if (recognition.getLabel().equals("Ball")) {
+
+                                    // center it on camera
+                                    while (recognition.getRight() != 0) {
+                                        if (recognition.getRight() > 0) {
+                                            turn(0, "right");
+                                        } else if (recognition.getRight() < 0) {
+                                            turn(0, "left");
+                                        }
+                                    }
+
+                                    // go foward to get it into claw
+                                    while (recognition.getTop() > -5) {
+                                        goFoward(0);
+                                    }
+
+                                    // grab object
+                                    claw("close");
+                                    wind("up", 500);
+                                }
+                                i++;
+                            }
+                            telemetry.update();
+                        }
+                    }
+                }
+
+                // to grab the nearest duck
+                if (gamepad1.dpad_right) {
+                    if (tfod != null) {
+                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                        if (updatedRecognitions != null) {
+                            telemetry.addData("# Object Detected", updatedRecognitions.size());
+                            int i = 0;
+                            for (Recognition recognition : updatedRecognitions) {
+                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                        recognition.getLeft(), recognition.getTop());
+                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                        recognition.getRight(), recognition.getBottom());
+
+                                if (recognition.getLabel().equals("Duck")) {
+
+                                    // center it on camera
+                                    while (recognition.getRight() != 0) {
+                                        if (recognition.getRight() > 0) {
+                                            turn(0, "right");
+                                        } else if (recognition.getRight() < 0) {
+                                            turn(0, "left");
+                                        }
+                                    }
+
+                                    // go foward to get it into claw
+                                    while (recognition.getTop() > -5) {
+                                        goFoward(0);
+                                    }
+
                                     // grab object
                                     claw("close");
                                     wind("up", 500);
