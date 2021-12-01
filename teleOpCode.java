@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -26,9 +27,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
-@TeleOp
-
-public class teleOpCode extends LinearOpMode {
+@Autonomous
+public class autonomusCode extends LinearOpMode {
 
     // vuforia key
     private static final String VUFORIA_KEY = "AYHN1aL/////AAABmYrrSlCefkltl6fJdzJbMmsrPxVWJT3oTh/1nwkBjsa2mqa3lzXGv8PSdvit2XJmvJSo4yQbLZuJ/8GGiLyOUkxC+MSR6Xpc7zCnnWH3uhT/+PyaxU2+nrn67S3mxjLSC1oGXvdcbLhkoSDDyJ53K3sF4X0YdwtP9Jlg+i1RpJczM0t4Z1J2mkhufIpYCUgf4kqM4ie3T2Q/9EYkLgh1qlrM1yzTv8553fyxGtvLUc2rHWdqzuDuc32sQ7rQ81ZZNjKSjuesFKL2W7Fx2Pk660M7cWr6obPOa0KmL2NylbtEnP3RP0hQqBZ+6ZqRrWl6bAHZd0wjlxfnk+bzaIatkK2l3u2O057pHNg9vFE5CcsV";
@@ -137,6 +137,32 @@ public class teleOpCode extends LinearOpMode {
         }
     }
 
+    // some encoders
+    public void encoders(int targetToPlace) {
+        FL.setTargetPosition(targetToPlace);
+        FR.setTargetPosition(targetToPlace);
+        BL.setTargetPosition(targetToPlace);
+        BR.setTargetPosition(targetToPlace);
+
+        FL.setPower(1);
+        FR.setPower(1);
+        BL.setPower(1);
+        BR.setPower(1);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+    }
+
     // duck carousel spinner
     public void spinDuck(int tIme) {
         DCM.setPower(1);
@@ -147,22 +173,32 @@ public class teleOpCode extends LinearOpMode {
     }
 
     // claw
-    public void claw(String closeOpen) {
+    public void claw(int tIme, String closeOpen) {
         if (closeOpen == "close") {
             CM.setPower(1);
         } else if (closeOpen == "open") {
             CM.setPower(-1);
         }
 
-        sleep(500);
+        sleep(tIme);
 
         CM.setPower(0);
     }
 
+    // extend claw or pull it back in
+    public void extendOrPull(String extendOrPull) {
+        if (extendOrPull == "extend") {
+            servo.setPosition(1);
+        } else if (extendOrPull == "pull") {
+            servo.setPosition(0);
+        }
+    }
+
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
-    @Override
+    Servo servo;
 
+    @Override
     public void runOpMode() throws InterruptedException {
 
         initVuforia();
@@ -211,14 +247,16 @@ public class teleOpCode extends LinearOpMode {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(parameters.cameraName, cameraLocationOnRobot);
         }
 
-        FR = hardwareMap.dcMotor.get("Front Right");
+        // All motors
         FL = hardwareMap.dcMotor.get("Front Left");
-        BR = hardwareMap.dcMotor.get("Back Right");
+        FR = hardwareMap.dcMotor.get("Front Right");
         BL = hardwareMap.dcMotor.get("Back Left");
-        RPM = hardwareMap.dcMotor.get("Right Pulley System");
-        LPM = hardwareMap.dcMotor.get("Left Pulley System");
+        BR = hardwareMap.dcMotor.get("Back Right");
+        RPM = hardwareMap.dcMotor.get("Right Pulley Motor");
+        LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
         DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
         CM = hardwareMap.dcMotor.get("Claw Motor");
+        servo = hardwareMap.servo.get("daServo");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
@@ -282,153 +320,20 @@ public class teleOpCode extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                // move robot
-                FR.setPower(gamepad1.right_stick_y);
-                BR.setPower(gamepad1.right_stick_y);
-                FL.setPower(gamepad1.left_stick_y);
-                BL.setPower(gamepad1.left_stick_y);
-
-                // pick up things
-                if (gamepad1.a) {
-                   claw("close");
-                   wind("up", 500);
-                }
-
-                // drop object
-                if (gamepad1.b) {
-                    claw("open");
-                }
-
-                // bring claw down
-                while (gamepad1.left_trigger > 0) {
-                    wind("down", 0);
-                }
-
-                // bring claw up
-                while(gamepad1.right_trigger > 0) {
-                    wind("up", 0);
-                }
-
-                // to grab the nearest cube
-                if (gamepad1.dpad_up) {
-                    if (tfod != null) {
-                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                        if (updatedRecognitions != null) {
-                            telemetry.addData("# Object Detected", updatedRecognitions.size());
-                            int i = 0;
-                            for (Recognition recognition : updatedRecognitions) {
-                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                        recognition.getLeft(), recognition.getTop());
-                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                        recognition.getRight(), recognition.getBottom());
-
-                                if (recognition.getLabel().equals("Cube")) {
-
-                                    // center it on camera
-                                    while (recognition.getRight() != 0) {
-                                        if (recognition.getRight() > 0) {
-                                            turn(0, "right");
-                                        } else if (recognition.getRight() < 0) {
-                                            turn(0, "left");
-                                        }
-                                    }
-
-                                    // go foward to get it into claw
-                                    while (recognition.getTop() > -5) {
-                                        goFoward(0);
-                                    }
-
-                                    // grab object
-                                    claw("close");
-                                    wind("up", 500);
-                                }
-                                i++;
-                            }
-                            telemetry.update();
+                if (tfod != null) {
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions != null) {
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        int i = 0;
+                        for (Recognition recognition : updatedRecognitions) {
+                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                    recognition.getLeft(), recognition.getTop());
+                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                    recognition.getRight(), recognition.getBottom());
+                            i++;
                         }
-                    }
-                }
-
-                // to grab the nearest ball
-                if (gamepad1.dpad_left) {
-                    if (tfod != null) {
-                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                        if (updatedRecognitions != null) {
-                            telemetry.addData("# Object Detected", updatedRecognitions.size());
-                            int i = 0;
-                            for (Recognition recognition : updatedRecognitions) {
-                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                        recognition.getLeft(), recognition.getTop());
-                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                        recognition.getRight(), recognition.getBottom());
-
-                                if (recognition.getLabel().equals("Ball")) {
-
-                                    // center it on camera
-                                    while (recognition.getRight() != 0) {
-                                        if (recognition.getRight() > 0) {
-                                            turn(0, "right");
-                                        } else if (recognition.getRight() < 0) {
-                                            turn(0, "left");
-                                        }
-                                    }
-
-                                    // go foward to get it into claw
-                                    while (recognition.getTop() > -5) {
-                                        goFoward(0);
-                                    }
-
-                                    // grab object
-                                    claw("close");
-                                    wind("up", 500);
-                                }
-                                i++;
-                            }
-                            telemetry.update();
-                        }
-                    }
-                }
-
-                // to grab the nearest duck
-                if (gamepad1.dpad_right) {
-                    if (tfod != null) {
-                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                        if (updatedRecognitions != null) {
-                            telemetry.addData("# Object Detected", updatedRecognitions.size());
-                            int i = 0;
-                            for (Recognition recognition : updatedRecognitions) {
-                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                        recognition.getLeft(), recognition.getTop());
-                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                        recognition.getRight(), recognition.getBottom());
-
-                                if (recognition.getLabel().equals("Duck")) {
-
-                                    // center it on camera
-                                    while (recognition.getRight() != 0) {
-                                        if (recognition.getRight() > 0) {
-                                            turn(0, "right");
-                                        } else if (recognition.getRight() < 0) {
-                                            turn(0, "left");
-                                        }
-                                    }
-
-                                    // go foward to get it into claw
-                                    while (recognition.getTop() > -5) {
-                                        goFoward(0);
-                                    }
-
-                                    // grab object
-                                    claw("close");
-                                    wind("up", 500);
-                                }
-                                i++;
-                            }
-                            telemetry.update();
-                        }
+                        telemetry.update();
                     }
                 }
             }
