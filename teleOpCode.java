@@ -137,15 +137,6 @@ public class teleOpCode extends LinearOpMode {
         }
     }
 
-    // duck carousel spinner
-    public void spinDuck(int tIme) {
-        DCM.setPower(1);
-
-        sleep(tIme);
-
-        DCM.setPower(0);
-    }
-
     // claw
     public void claw(String closeOpen) {
         if (closeOpen == "close") {
@@ -168,7 +159,7 @@ public class teleOpCode extends LinearOpMode {
         }
     }
 
-    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
+    DcMotor FR, FL, BR, BL, RPM, LPM, CM;
 
     Servo servo;
 
@@ -228,7 +219,6 @@ public class teleOpCode extends LinearOpMode {
         BL = hardwareMap.dcMotor.get("Back Left");
         RPM = hardwareMap.dcMotor.get("Right Pulley System");
         LPM = hardwareMap.dcMotor.get("Left Pulley System");
-        DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
         CM = hardwareMap.dcMotor.get("Claw Motor");
         servo = hardwareMap.servo.get("daServo");
         FL.setDirection(DcMotor.Direction.REVERSE);
