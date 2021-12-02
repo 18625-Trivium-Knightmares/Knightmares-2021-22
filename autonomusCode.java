@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
@@ -55,9 +56,6 @@ public class autonomusCode extends LinearOpMode {
     private WebcamName webcam = null;
 
     private boolean targetVisible = false;
-    private float phoneXRotate = 0;
-    private float phoneYRotate = 0;
-    private float phoneZRotate = 0;
 
     private TFObjectDetector tfod;
 
@@ -129,10 +127,11 @@ public class autonomusCode extends LinearOpMode {
             LPM.setPower(-1);
         }
 
-        sleep(tIme);
-
-        RPM.setPower(0);
-        LPM.setPower(0);
+        if (tIme != 0) {
+            sleep(tIme);
+            RPM.setPower(0);
+            LPM.setPower(0);
+        }
     }
 
     // some encoders
@@ -183,7 +182,18 @@ public class autonomusCode extends LinearOpMode {
         CM.setPower(0);
     }
 
+    // extend claw or pull it back in
+    public void extendOrPull(String extendOrPull) {
+        if (extendOrPull == "extend") {
+            servo.setPosition(1);
+        } else if (extendOrPull == "pull") {
+            servo.setPosition(0);
+        }
+    }
+
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
+
+    Servo servo;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -243,6 +253,7 @@ public class autonomusCode extends LinearOpMode {
         LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
         DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
         CM = hardwareMap.dcMotor.get("Claw Motor");
+        servo = hardwareMap.servo.get("daServo");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
