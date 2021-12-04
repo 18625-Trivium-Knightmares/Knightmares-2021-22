@@ -123,11 +123,11 @@ public class teleOpCode extends LinearOpMode {
     // pull claw up or down
     public void wind(String upDown, int tIme) {
         if (upDown == "up") {
-            RPM.setPower(1);
-            LPM.setPower(1);
+            RPM.setPower(-0.75);
+            LPM.setPower(-0.75);
         } else if (upDown == "down") {
-            RPM.setPower(-1);
-            LPM.setPower(-1);
+            RPM.setPower(0.75);
+            LPM.setPower(0.75);
         }
 
         if (tIme != 0) {
