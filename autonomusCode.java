@@ -193,7 +193,7 @@ public class autonomusCode extends LinearOpMode {
 
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
-    Servo servo;
+    Servo servo, servo2;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -249,16 +249,24 @@ public class autonomusCode extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("Front Right");
         BL = hardwareMap.dcMotor.get("Back Left");
         BR = hardwareMap.dcMotor.get("Back Right");
-        RPM = hardwareMap.dcMotor.get("Right Pulley Motor");
-        LPM = hardwareMap.dcMotor.get("Left Pulley Motor");
-        DCM = hardwareMap.dcMotor.get("Duck Carousel Motor");
-        CM = hardwareMap.dcMotor.get("Claw Motor");
+        RPM = hardwareMap.dcMotor.get("Right Pulley");
+        LPM = hardwareMap.dcMotor.get("Left Pulley");
+        DCM = hardwareMap.dcMotor.get("Duck");
+        CM = hardwareMap.dcMotor.get("Claw");
         servo = hardwareMap.servo.get("daServo");
+        servo2 = hardwareMap.servo.get("daServo2");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
+
+        /** Strategy:
+         * Before the robot moves locate where the Team shipping element on the barcode is in the frame.
+         * Based off where the team shipping element is place the freight on the corresponding level.
+         * 
+         *
+         */
 
         targets.activate();
         while (!isStopRequested()) {
