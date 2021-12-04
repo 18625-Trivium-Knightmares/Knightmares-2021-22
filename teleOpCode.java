@@ -164,7 +164,6 @@ public class teleOpCode extends LinearOpMode {
     Servo servo, servo2;
 
     @Override
-
     public void runOpMode() throws InterruptedException {
 
         initVuforia();
@@ -278,7 +277,7 @@ public class teleOpCode extends LinearOpMode {
             tfod.setZoom(2.5, 16.0/9.0);
         }
 
-        /** Wait for the game to begin */
+        /* Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         waitForStart();
@@ -293,13 +292,16 @@ public class teleOpCode extends LinearOpMode {
 
                 // pick up things
                 if (gamepad1.a) {
-                   claw("close");
-                   wind("up", 500);
+                    extendOrPull("extend");
+                    claw("close");
+                    extendOrPull("pull");
                 }
 
                 // drop object
                 if (gamepad1.b) {
+                    extendOrPull("extend");
                     claw("open");
+                    extendOrPull("pull");
                 }
 
                 // bring claw down
