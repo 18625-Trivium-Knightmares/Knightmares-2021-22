@@ -161,7 +161,7 @@ public class teleOpCode extends LinearOpMode {
 
     DcMotor FR, FL, BR, BL, RPM, LPM, CM;
 
-    Servo servo;
+    Servo servo, servo2;
 
     @Override
 
@@ -217,10 +217,11 @@ public class teleOpCode extends LinearOpMode {
         FL = hardwareMap.dcMotor.get("Front Left");
         BR = hardwareMap.dcMotor.get("Back Right");
         BL = hardwareMap.dcMotor.get("Back Left");
-        RPM = hardwareMap.dcMotor.get("Right Pulley System");
-        LPM = hardwareMap.dcMotor.get("Left Pulley System");
-        CM = hardwareMap.dcMotor.get("Claw Motor");
+        RPM = hardwareMap.dcMotor.get("Right Pulley");
+        LPM = hardwareMap.dcMotor.get("Left Pulley");
+        CM = hardwareMap.dcMotor.get("Claw");
         servo = hardwareMap.servo.get("daServo");
+        servo2 = hardwareMap.servo.get("daServo2");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
