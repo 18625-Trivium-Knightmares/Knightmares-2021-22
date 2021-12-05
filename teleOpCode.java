@@ -150,6 +150,15 @@ public class teleOpCode extends LinearOpMode {
         CM.setPower(0);
     }
 
+    // duck carousel
+    public void duck(int tIme) {
+        DCM.setPower(1);
+
+        sleep(tIme);
+
+        DCM.setPower(0);
+    }
+
 //    // extend claw or pull it back in
 //    public void extendOrPull(String extendOrPull) {
 //        if (extendOrPull == "extend") {
@@ -159,7 +168,7 @@ public class teleOpCode extends LinearOpMode {
 //        }
 //    }
 
-    DcMotor FR, FL, BR, BL, RPM, LPM, CM;
+    DcMotor FR, FL, BR, BL, RPM, LPM, CM, DCM;
 
 //    Servo servo, servo2;
 
@@ -219,6 +228,7 @@ public class teleOpCode extends LinearOpMode {
         RPM = hardwareMap.dcMotor.get("Right Pulley");
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         CM = hardwareMap.dcMotor.get("Claw");
+        DCM = hardwareMap.dcMotor.get("Duck");
 //        servo = hardwareMap.servo.get("daServo");
 //        servo2 = hardwareMap.servo.get("daServo2");
         FL.setDirection(DcMotor.Direction.REVERSE);
@@ -301,6 +311,19 @@ public class teleOpCode extends LinearOpMode {
                 FL.setPower(gamepad1.left_stick_y * speed);
                 BL.setPower(gamepad1.left_stick_y * speed);
 
+                // pull claw up
+                if (gamepad1.y) {
+                    wind("up", 500); // 500 is temp
+                }
+
+                // bring claw down
+                if (gamepad1.a) {
+                    wind("down", 500); //500 is temp
+                }
+
+                if (gamepad1.b) {
+                    duck(5000);
+                }
 //                // to grab the nearest cube
 //                if (gamepad1.dpad_up) {
 //                    if (tfod != null) {
