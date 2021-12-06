@@ -61,65 +61,7 @@ public class teleOpCode extends LinearOpMode {
 //    private float phoneZRotate = 0;
 //
 //    private TFObjectDetector tfod;
-
-    // move foward or backward
-    public void goFoward(int tIme) {
-        FR.setPower(1);
-        FL.setPower(1);
-        BR.setPower(1);
-        BL.setPower(1);
-
-        if (tIme != 0) {
-            sleep(tIme);
-
-            FR.setPower(0);
-            FL.setPower(0);
-            BR.setPower(0);
-            BL.setPower(0);
-        }
-    }
-
-    public void goBackward(int tIme) {
-        FR.setPower(-1);
-        FL.setPower(-1);
-        BR.setPower(-1);
-        BL.setPower(-1);
-
-        if (tIme != 0) {
-            sleep(tIme);
-
-            FR.setPower(0);
-            FL.setPower(0);
-            BR.setPower(0);
-            BL.setPower(0);
-        }
-    }
-
-    // turn
-    public void turn(int tIme, String direction) {
-        if (direction == "right") {
-            FL.setPower(1);
-            BL.setPower(1);
-            FR.setPower(0);
-            BR.setPower(0);
-        } else if (direction == "left") {
-            FR.setPower(1);
-            BR.setPower(1);
-            FL.setPower(0);
-            BL.setPower(0);
-        } else {
-            System.out.println(direction + " is not an option");
-        }
-
-        if (tIme != 0) {
-            sleep(tIme);
-            FL.setPower(0);
-            FR.setPower(0);
-            BL.setPower(0);
-            BR.setPower(0);
-        }
-    }
-
+    
     // pull claw up or down
     public void wind(String upDown, int tIme) {
         if (upDown == "up") {
@@ -138,21 +80,14 @@ public class teleOpCode extends LinearOpMode {
     }
 
     // extend or pull claw
-    public void extend() {
-        servo.setPosition(1);
-    }
+    public void extend() { servo.setPosition(1); }
 
-    public void pull() {
-        servo.setPosition(0);
-    }
+    public void pull() { servo.setPosition(0); }
 
     // claw
     public void claw(String closeOpen) {
-        if (closeOpen == "close") {
-            CM.setPower(1);
-        } else if (closeOpen == "open") {
-            CM.setPower(-1);
-        }
+        if (closeOpen == "close") { CM.setPower(1); } 
+        else if (closeOpen == "open") { CM.setPower(-1); }
 
         sleep(500);
 
