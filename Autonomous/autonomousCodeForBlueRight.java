@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 @Autonomous
-public class autonomousCodeForBlueRight extends LinearOpMode {
+public class autonomousCodeForRedRight extends LinearOpMode {
 
     // move foward or backward
     public void goFoward(int tIme) {
