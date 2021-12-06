@@ -137,6 +137,15 @@ public class teleOpCode extends LinearOpMode {
         }
     }
 
+    // extend or pull claw
+    public void extend() {
+        servo.setPosition(1);
+    }
+
+    public void pull() {
+        servo.setPosition(0);
+    }
+
     // claw
     public void claw(String closeOpen) {
         if (closeOpen == "close") {
@@ -150,6 +159,19 @@ public class teleOpCode extends LinearOpMode {
         CM.setPower(0);
     }
 
+    // grab or drop object
+    public void grab() {
+        extend();
+        claw("close");
+        pull();
+    }
+
+    public void drop() {
+        extend();
+        claw("open");
+        pull();
+    }
+
     // duck carousel
     public void duck(int tIme) {
         DCM.setPower(1);
@@ -159,18 +181,10 @@ public class teleOpCode extends LinearOpMode {
         DCM.setPower(0);
     }
 
-//    // extend claw or pull it back in
-//    public void extendOrPull(String extendOrPull) {
-//        if (extendOrPull == "extend") {
-//            servo.setPosition(1);
-//        } else if (extendOrPull == "pull") {
-//            servo.setPosition(0);
-//        }
-//    }
-
     DcMotor FR, FL, BR, BL, RPM, LPM, CM, DCM;
 
-//    Servo servo, servo2;
+    Servo servo, servo2;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -229,8 +243,8 @@ public class teleOpCode extends LinearOpMode {
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         CM = hardwareMap.dcMotor.get("Claw");
         DCM = hardwareMap.dcMotor.get("Duck");
-//        servo = hardwareMap.servo.get("daServo");
-//        servo2 = hardwareMap.servo.get("daServo2");
+        servo = hardwareMap.servo.get("daServo");
+        servo2 = hardwareMap.servo.get("daServo2");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
