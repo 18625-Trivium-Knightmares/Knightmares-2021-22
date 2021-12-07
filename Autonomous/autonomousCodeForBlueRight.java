@@ -4,9 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.methodForEncoders;
+
 
 @Autonomous
-public class autonomousCodeForRedRight extends LinearOpMode {
+public class autonomousCodeForBlueRight extends LinearOpMode {
 
     // move foward or backward
     public void goFoward(int tIme) {
@@ -156,6 +158,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
 
 //    Servo servo, servo2;
 
+    methodForEncoders encoders = new methodForEncoders();
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -184,5 +188,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
          * Park completely in warehouse
          */
 
+        encoders.calculateToPlace(48, 1338, 5);
+
+        turn(500, "left");
     }
 }
