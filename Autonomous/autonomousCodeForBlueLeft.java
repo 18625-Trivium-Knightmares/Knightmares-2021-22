@@ -44,13 +44,13 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
     // turn
     public void turn(int tIme, String direction) {
         if (direction == "right") {
-            FL.setPower(1);
-            BL.setPower(1);
+            FL.setPower(0.5);
+            BL.setPower(0.5);
             FR.setPower(0);
             BR.setPower(0);
         } else if (direction == "left") {
-            FR.setPower(1);
-            BR.setPower(1);
+            FR.setPower(0.5);
+            BR.setPower(0.5);
             FL.setPower(0);
             BL.setPower(0);
         } else {
@@ -119,25 +119,37 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
     }
 
     // claw
-    public void claw(int tIme, String closeOpen) {
-        if (closeOpen == "close") {
+    public void claw(String closeOpen) {
+        if (closeOpen  == "close") {
             CM.setPower(1);
+            sleep(500);
+            CM.setPower(0);
         } else if (closeOpen == "open") {
             CM.setPower(-1);
+            sleep(500);
+            CM.setPower(0);
         }
-
-        sleep(tIme);
-
-        CM.setPower(0);
     }
 
     // extend claw or pull it back in
-//    public void extendOrPull(String extendOrPull) {
-//        if (extendOrPull == "extend") {
-//            servo.setPosition(1);
-//        } else if (extendOrPull == "pull") {
-//            servo.setPosition(0);
-//        }
+//    public void extend() {
+//        servo.setPosition(1);
+//    }
+//    public void pull() {
+//        servo.setPosition(0);
+//    }
+//
+//    // grab or drop objects
+//    public void grab() {
+//        extend();
+//        claw("close");
+//        pull();
+//    }
+//
+//    public void drop() {
+//        extend();
+//        claw("open");
+//        pull();
 //    }
 
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
