@@ -30,35 +30,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 @Autonomous
 public class autonomusCodeForRedLeft extends LinearOpMode {
 
-    // vuforia key
-    private static final String VUFORIA_KEY = "AYHN1aL/////AAABmYrrSlCefkltl6fJdzJbMmsrPxVWJT3oTh/1nwkBjsa2mqa3lzXGv8PSdvit2XJmvJSo4yQbLZuJ/8GGiLyOUkxC+MSR6Xpc7zCnnWH3uhT/+PyaxU2+nrn67S3mxjLSC1oGXvdcbLhkoSDDyJ53K3sF4X0YdwtP9Jlg+i1RpJczM0t4Z1J2mkhufIpYCUgf4kqM4ie3T2Q/9EYkLgh1qlrM1yzTv8553fyxGtvLUc2rHWdqzuDuc32sQ7rQ81ZZNjKSjuesFKL2W7Fx2Pk660M7cWr6obPOa0KmL2NylbtEnP3RP0hQqBZ+6ZqRrWl6bAHZd0wjlxfnk+bzaIatkK2l3u2O057pHNg9vFE5CcsV";
-
-    // tensorflow objects
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
-    private static final String[] LABELS = {
-            "Ball",
-            "Cube",
-            "Duck",
-            "Marker"
-    };
-
-    // measurements
-    private static final float mmPerInch = 25.4f;
-    private static final float mmTargetHeight = 6 * mmPerInch;
-    private static final float halfField = 72 * mmPerInch;
-    private static final float halfTile = 12 * mmPerInch;
-    private static final float oneAndHalfTile = 36 * mmPerInch;
-
-    // Class Members
-    private OpenGLMatrix lastLocation = null;
-    private VuforiaLocalizer vuforia = null;
-    private VuforiaTrackables targets = null;
-    private WebcamName webcam = null;
-
-    private boolean targetVisible = false;
-
-    private TFObjectDetector tfod;
-
     // move foward or backward
     public void goFoward(int tIme) {
         FR.setPower(1);
@@ -95,13 +66,13 @@ public class autonomusCodeForRedLeft extends LinearOpMode {
     // turn
     public void turn(int tIme, String direction) {
         if (direction == "right") {
-            FL.setPower(1);
-            BL.setPower(1);
+            FL.setPower(0.5);
+            BL.setPower(0.5);
             FR.setPower(0);
             BR.setPower(0);
         } else if (direction == "left") {
-            FR.setPower(1);
-            BR.setPower(1);
+            FR.setPower(0.5);
+            BR.setPower(0.5);
             FL.setPower(0);
             BL.setPower(0);
         } else {
@@ -170,26 +141,38 @@ public class autonomusCodeForRedLeft extends LinearOpMode {
     }
 
     // claw
-    public void claw(int tIme, String closeOpen) {
-        if (closeOpen == "close") {
+    public void claw(String closeOpen) {
+        if (closeOpen  == "close") {
             CM.setPower(1);
+            sleep(500);
+            CM.setPower(0);
         } else if (closeOpen == "open") {
             CM.setPower(-1);
+            sleep(500);
+            CM.setPower(0);
         }
-
-        sleep(tIme);
-
-        CM.setPower(0);
     }
 
     // extend claw or pull it back in
-    public void extendOrPull(String extendOrPull) {
-        if (extendOrPull == "extend") {
-            servo.setPosition(1);
-        } else if (extendOrPull == "pull") {
-            servo.setPosition(0);
-        }
-    }
+//    public void extend() {
+//        servo.setPosition(1);
+//    }
+//    public void pull() {
+//        servo.setPosition(0);
+//    }
+//
+//    // grab or drop objects
+//    public void grab() {
+//        extend();
+//        claw("close");
+//        pull();
+//    }
+//
+//    public void drop() {
+//        extend();
+//        claw("open");
+//        pull();
+//    }
 
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
 
