@@ -190,7 +190,5 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         encoders.calculateToPlace(48, 1338, 5);
 
         turn(500,"left");
-
-
     }
 }
