@@ -27,9 +27,9 @@ public class teleOpCode extends LinearOpMode {
     }
 
     // extend or pull claw
-    public void extend() { servo.setPosition(1); }
+//    public void extend() { servo.setPosition(1); }
 
-    public void pull() { servo.setPosition(0); }
+//    public void pull() { servo.setPosition(0); }
 
     // claw
     public void claw(String closeOpen) {
@@ -42,21 +42,22 @@ public class teleOpCode extends LinearOpMode {
     }
 
     // grab or drop object
-    public void grab() {
-        extend();
-        claw("close");
-        pull();
-    }
-
-    public void drop() {
-        extend();
-        claw("open");
-        pull();
-    }
+//    public void grab() {
+//        extend();
+//        claw("close");
+//        pull();
+//    }
+//
+//    public void drop() {
+//        extend();
+//        claw("open");
+//        pull();
+//    }
 
     // duck carousel
     public void duck(int tIme) {
-        DCM.setPower(1);
+        DCM.setPower(-0.5
+        );
 
         sleep(tIme);
 
@@ -65,12 +66,12 @@ public class teleOpCode extends LinearOpMode {
 
     DcMotor FR, FL, BR, BL, RPM, LPM, CM, DCM;
 
-    Servo servo, servo2;
+//    Servo servo, servo2;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        
+
 
         FR = hardwareMap.dcMotor.get("Front Right");
         FL = hardwareMap.dcMotor.get("Front Left");
@@ -80,12 +81,12 @@ public class teleOpCode extends LinearOpMode {
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         CM = hardwareMap.dcMotor.get("Claw");
         DCM = hardwareMap.dcMotor.get("Duck");
-        servo = hardwareMap.servo.get("daServo");
-        servo2 = hardwareMap.servo.get("daServo2");
-        FL.setDirection(DcMotor.Direction.REVERSE);
-        BL.setDirection(DcMotor.Direction.REVERSE);
+//        servo = hardwareMap.servo.get("daServo");
+//        servo2 = hardwareMap.servo.get("daServo2");
+        FR.setDirection(DcMotor.Direction.REVERSE);
+        BR.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
-        
+
         waitForStart();
 
         if (opModeIsActive()) {
