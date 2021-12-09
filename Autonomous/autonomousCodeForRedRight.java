@@ -187,8 +187,30 @@ public class autonomousCodeForRedRight extends LinearOpMode {
          * Park completely in warehouse
          */
 
-        encoders.calculateToPlace(48, 1338, 5);
+        int Target = encoders.calculateToPlace(48, 1338, 5);
+        encoders(Target);
 
         turn(500,"left");
+
+        wind("up", 1000);
+
+//        drop();
+
+        turn(500, "left");
+
+        Target = encoders.calculateToPlace(45, 1338, 5);
+        encoders(Target);
+
+        turn(500,"right");
+
+        Target = encoders.calculateToPlace(100, 1338, 5);
+        encoders(Target);
+
+        spinDuck(1000);
+        
+        turn(1000, "right");
+        
+        Target = encoders.calculateToPlace(150, 1338, 5);
+        encoders(Target);
     }
 }
