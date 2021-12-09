@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 @Autonomous
 public class autonomousCodeForBlueRight extends LinearOpMode {
 
-    // move foward or backward
-    public void goFoward(int tIme) {
+    // move forward or backward
+    public void goForward(int tIme) {
         FR.setPower(1);
         FL.setPower(1);
         BR.setPower(1);
@@ -46,17 +46,15 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
     // turn
     public void turn(int tIme, String direction) {
         if (direction == "right") {
-            FL.setPower(0.5);
-            BL.setPower(0.5);
-            FR.setPower(0);
-            BR.setPower(0);
+            FL.setPower(1);
+            BL.setPower(1);
+            FR.setPower(-1);
+            BR.setPower(-1);
         } else if (direction == "left") {
-            FR.setPower(0.5);
-            BR.setPower(0.5);
-            FL.setPower(0);
-            BL.setPower(0);
-        } else {
-            System.out.println(direction + " is not an option");
+            FR.setPower(1);
+            BR.setPower(1);
+            FL.setPower(-1);
+            BL.setPower(-1);
         }
 
         if (tIme != 0) {
@@ -102,8 +100,7 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
-        }
+        sleep(500);
 
         FL.setPower(0);
         FR.setPower(0);
@@ -181,37 +178,12 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         waitForStart();
 
         /** Strategy:
-         * Before the robot moves locate where the Team shipping element on the barcode is in the frame.
-         * Based off where the team shipping element is place the freight on the corresponding level.
          * Next deliver a duck from the carousel to the floor
-         * Deliver as much freight as possible to any level of the shipping hub and try to keep it balanced.
          * Park completely in warehouse
          */
 
-        int Target = encoders.calculateToPlace(48, 1338, 5);
-        encoders(Target);
-
-        turn(500, "left");
-
-        wind("up", 1000);
-
-//        drop();
-
-        turn(500, "left");
-
-        Target = encoders.calculateToPlace(45, 1338, 5);
-        encoders(Target);
-
-        turn(500, "left");
-
-        Target = encoders.calculateToPlace(20, 1338, 5);
-        encoders(Target);
-
-        spinDuck(1000);
-
-        turn(1000, "left");
-
-        Target = encoders.calculateToPlace(150, 1338, 5);
+        turn(700, "left");
+        int Target = encoders.calculateToPlace(24, 1338, 5);
         encoders(Target);
     }
 }
