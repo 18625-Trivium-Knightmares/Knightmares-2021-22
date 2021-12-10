@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 
 
 @Autonomous
-public class autonomousCodeForRedRight extends LinearOpMode {
+public class autonomousCodeForBlueRight extends LinearOpMode {
 
     // move forward or backward
     public void goForward(int tIme) {
@@ -158,7 +158,7 @@ public class autonomousCodeForRedRight extends LinearOpMode {
     methodForEncoders encoders = new methodForEncoders();
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
 
         // All motors
         FL = hardwareMap.dcMotor.get("Front Left");
@@ -178,17 +178,35 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         waitForStart();
 
         /** Strategy:
-         * Deliver a duck from the carousel to the floor
+         * Next deliver a duck from the carousel to the floor
          * Park completely in warehouse
          */
 
-        turn(1500, "right");
-        int Target = encoders.calculateToPlace(5, 1338, 5);
-        encoders(-Target);
+        int Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
 
+        turn(1500, "right");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(-Target);
         spinDuck(1000);
 
-        Target = encoders.calculateToPlace(10, 1338, 5);
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "right");
+        Target = encoders.calculateToPlace(8, 1338, 5);
         encoders(Target);
     }
 }
