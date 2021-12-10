@@ -130,31 +130,8 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         }
     }
 
-    // extend claw or pull it back in
-//    public void extend() {
-//        servo.setPosition(1);
-//    }
-//    public void pull() {
-//        servo.setPosition(0);
-//    }
-//
-//    // grab or drop objects
-//    public void grab() {
-//        extend();
-//        claw("close");
-//        pull();
-//    }
-//
-//    public void drop() {
-//        extend();
-//        claw("open");
-//        pull();
-//    }
-
     DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
-
-//    Servo servo, servo2;
-
+    
     methodForEncoders encoders = new methodForEncoders();
 
     @Override
@@ -169,8 +146,6 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         DCM = hardwareMap.dcMotor.get("Duck");
         CM = hardwareMap.dcMotor.get("Claw");
-//        servo = hardwareMap.servo.get("daServo");
-//        servo2 = hardwareMap.servo.get("daServo2");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
