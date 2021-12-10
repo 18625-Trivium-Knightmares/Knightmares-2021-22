@@ -110,7 +110,7 @@ public class autonomousCodeForRedRight extends LinearOpMode {
 
     // duck carousel spinner
     public void spinDuck(int tIme) {
-        DCM.setPower(1);
+        DCM.setPower(-1);
 
         sleep(tIme);
 
@@ -178,9 +178,17 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         waitForStart();
 
         /** Strategy:
-         * Next deliver a duck from the carousel to the floor
+         * Deliver a duck from the carousel to the floor
          * Park completely in warehouse
          */
-        
+
+        turn(1500, "right");
+        int Target = encoders.calculateToPlace(5, 1338, 5);
+        encoders(-Target);
+
+        spinDuck(1000);
+
+        Target = encoders.calculateToPlace(10, 1338, 5);
+        encoders(Target);
     }
 }
