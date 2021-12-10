@@ -110,7 +110,7 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
     // duck carousel spinner
     public void spinDuck(int tIme) {
-        DCM.setPower(1);
+        DCM.setPower(-1);
 
         sleep(tIme);
 
@@ -182,5 +182,36 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
          * Park completely in warehouse
          */
 
+        turn(1500, "right");
+        int Target = encoders.calculateToPlace(2, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "right");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(-Target);
+        spinDuck(1000);
+
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "left");
+        Target = encoders.calculateToPlace(1, 1338, 5);
+        encoders(Target);
+
+        turn(1500, "right");
+        Target = encoders.calculateToPlace(8, 1338, 5);
+        encoders(Target);
     }
 }
