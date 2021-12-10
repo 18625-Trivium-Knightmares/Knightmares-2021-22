@@ -182,12 +182,7 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
          * Park completely in warehouse
          */
 
-        turn(1500, "right");
-        int Target = encoders.calculateToPlace(2, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "left");
-        Target = encoders.calculateToPlace(1, 1338, 5);
+        int Target = encoders.calculateToPlace(1, 1338, 5);
         encoders(Target);
 
         turn(1500, "right");
@@ -209,7 +204,7 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         turn(1500, "left");
         Target = encoders.calculateToPlace(1, 1338, 5);
         encoders(Target);
-        
+
         turn(1500, "right");
         Target = encoders.calculateToPlace(8, 1338, 5);
         encoders(Target);
