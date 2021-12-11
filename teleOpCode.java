@@ -8,70 +8,30 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 
 public class teleOpCode extends LinearOpMode {
-
-    // pull claw up or down
-    public void wind(String upDown, int tIme) {
-        if (upDown == "up") {
+    // wind up
+    public void wind(String upOrDown, int tIme) {
+        if (upOrDown == "up") {
             RPM.setPower(-0.75);
             LPM.setPower(-0.75);
-        } else if (upDown == "down") {
+        } else if (upOrDown == "down") {
             RPM.setPower(0.75);
             LPM.setPower(0.75);
         }
-
-        if (tIme != 0) {
-            sleep(tIme);
-            RPM.setPower(0);
-            LPM.setPower(0);
-        }
     }
-
-    // extend or pull claw
-//    public void extend() { servo.setPosition(1); }
-
-//    public void pull() { servo.setPosition(0); }
-
-    // claw
-    public void claw(String closeOpen) {
-        if (closeOpen == "close") { CM.setPower(1); }
-        else if (closeOpen == "open") { CM.setPower(-1); }
-
-        sleep(500);
-
-        CM.setPower(0);
-    }
-
-    // grab or drop object
-//    public void grab() {
-//        extend();
-//        claw("close");
-//        pull();
-//    }
-//
-//    public void drop() {
-//        extend();
-//        claw("open");
-//        pull();
-//    }
 
     // duck carousel
     public void duck(int tIme) {
-        DCM.setPower(-0.5
-        );
+        DCM.setPower(-0.5);
 
         sleep(tIme);
 
         DCM.setPower(0);
     }
 
-    DcMotor FR, FL, BR, BL, RPM, LPM, CM, DCM;
-
-//    Servo servo, servo2;
-
+    DcMotor FR, FL, BR, BL, RPM, LPM, IM, DCM;
 
     @Override
     public void runOpMode() throws InterruptedException {
-
 
         FR = hardwareMap.dcMotor.get("Front Right");
         FL = hardwareMap.dcMotor.get("Front Left");
@@ -79,10 +39,8 @@ public class teleOpCode extends LinearOpMode {
         BL = hardwareMap.dcMotor.get("Back Left");
         RPM = hardwareMap.dcMotor.get("Right Pulley");
         LPM = hardwareMap.dcMotor.get("Left Pulley");
-        CM = hardwareMap.dcMotor.get("Claw");
+        IM = hardwareMap.dcMotor.get("Intake");
         DCM = hardwareMap.dcMotor.get("Duck");
-//        servo = hardwareMap.servo.get("daServo");
-//        servo2 = hardwareMap.servo.get("daServo2");
         FR.setDirection(DcMotor.Direction.REVERSE);
         BR.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
@@ -110,16 +68,29 @@ public class teleOpCode extends LinearOpMode {
 
                 // pull claw up
                 if (gamepad1.y) {
-                    wind("up", 500); // 500 is temp
+                    wind("up", 500);
                 }
 
                 // bring claw down
                 if (gamepad1.a) {
-                    wind("down", 500); //500 is temp
+                    wind("down", 500);
                 }
 
                 if (gamepad1.b) {
-                    duck(5000);
+                    DCM.setPower(-1);
+                }
+
+                if (gamepad1.x) {
+                    DCM.setPower(0);
+                }
+
+                // pick up
+                if (gamepad1.right_trigger > 0) {
+                    IM.setPower(-0.25);
+                }
+
+                if (gamepad1.left_bumper) {
+                    IM.setPower(0);
                 }
             }
         }
