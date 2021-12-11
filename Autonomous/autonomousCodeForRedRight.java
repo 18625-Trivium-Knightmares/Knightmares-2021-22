@@ -46,15 +46,15 @@ public class autonomousCodeForRedRight extends LinearOpMode {
     // turn
     public void turn(int tIme, String direction) {
         if (direction == "right") {
-            FL.setPower(1);
-            BL.setPower(1);
-            FR.setPower(-1);
-            BR.setPower(-1);
+            FL.setPower(0.5);
+            BL.setPower(0.5);
+            FR.setPower(-0.5);
+            BR.setPower(-0.5);
         } else if (direction == "left") {
-            FR.setPower(1);
-            BR.setPower(1);
-            FL.setPower(-1);
-            BL.setPower(-1);
+            FR.setPower(0.5);
+            BR.setPower(0.5);
+            FL.setPower(-0.5);
+            BL.setPower(-0.5);
         }
 
         if (tIme != 0) {
@@ -73,10 +73,10 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         BL.setTargetPosition(targetToPlace);
         BR.setTargetPosition(targetToPlace);
 
-        FL.setPower(1);
-        FR.setPower(1);
-        BL.setPower(1);
-        BR.setPower(1);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+        BL.setPower(0.5);
+        BR.setPower(0.5);
 
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -144,7 +144,7 @@ public class autonomousCodeForRedRight extends LinearOpMode {
          * Park completely in warehouse
          */
 
-        turn(1200, "right");
+        turn(600, "right");
         int Target = encoders.calculateToPlace(5);
         encoders(-Target);
 
