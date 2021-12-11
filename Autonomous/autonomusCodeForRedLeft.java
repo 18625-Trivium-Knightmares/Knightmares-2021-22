@@ -66,23 +66,6 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         }
     }
 
-    // pull claw up or down
-    public void wind(String upDown, int tIme) {
-        if (upDown == "up") {
-            RPM.setPower(1);
-            LPM.setPower(1);
-        } else if (upDown == "down") {
-            RPM.setPower(-1);
-            LPM.setPower(-1);
-        }
-
-        if (tIme != 0) {
-            sleep(tIme);
-            RPM.setPower(0);
-            LPM.setPower(0);
-        }
-    }
-
     // some encoders
     public void encoders(int targetToPlace) {
         FL.setTargetPosition(targetToPlace);
@@ -117,20 +100,24 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         DCM.setPower(0);
     }
 
-    // claw
-    public void claw(String closeOpen) {
-        if (closeOpen  == "close") {
-            CM.setPower(1);
-            sleep(500);
-            CM.setPower(0);
-        } else if (closeOpen == "open") {
-            CM.setPower(-1);
-            sleep(500);
-            CM.setPower(0);
-        }
+    // pick up or drop object
+    public void grab() {
+        IM.setPower(1);
+
+        sleep(1000);
+
+        IM.setPower(0);
     }
 
-    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
+    public void drop() {
+        IM.setPower(-1);
+
+        sleep(1000);
+
+        IM.setPower(0);
+    }
+
+    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, IM;
 
     methodForEncoders encoders = new methodForEncoders();
 
@@ -145,7 +132,7 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         RPM = hardwareMap.dcMotor.get("Right Pulley");
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         DCM = hardwareMap.dcMotor.get("Duck");
-        CM = hardwareMap.dcMotor.get("Claw");
+        IM = hardwareMap.dcMotor.get("Intake");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
@@ -157,13 +144,13 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
          * Park completely in warehouse
          */
 
-        turn(1500, "right");
-        int Target = encoders.calculateToPlace(1, 1338, 5);
+        turn(1200, "right");
+        int Target = encoders.calculateToPlace(1);
         encoders(-Target);
 
         spinDuck(1000);
 
-        Target = encoders.calculateToPlace(10, 1338, 5);
+        Target = encoders.calculateToPlace(10);
         encoders(Target);
     }
 }
