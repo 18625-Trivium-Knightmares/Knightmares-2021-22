@@ -85,11 +85,20 @@ public class teleOpCode extends LinearOpMode {
                 }
 
                 // pick up
-                if (gamepad1.right_trigger > 0) {
+                if (gamepad1.left_trigger > 0) {
                     IM.setPower(-0.25);
                 }
 
                 if (gamepad1.left_bumper) {
+                    IM.setPower(0);
+                }
+                
+                // drop
+                if (gamepad1.right_trigger > 0) {
+                    IM.setPower(0.25);
+                }
+                
+                if (gamepad1.right_bumper) {
                     IM.setPower(0);
                 }
             }
