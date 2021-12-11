@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 
 
 @Autonomous
-public class autonomousCodeForBlueRight extends LinearOpMode {
+public class autonomousCodeForRedRight extends LinearOpMode {
 
     // move forward or backward
     public void goForward(int tIme) {
@@ -66,23 +66,6 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         }
     }
 
-    // pull claw up or down
-    public void wind(String upDown, int tIme) {
-        if (upDown == "up") {
-            RPM.setPower(1);
-            LPM.setPower(1);
-        } else if (upDown == "down") {
-            RPM.setPower(-1);
-            LPM.setPower(-1);
-        }
-
-        if (tIme != 0) {
-            sleep(tIme);
-            RPM.setPower(0);
-            LPM.setPower(0);
-        }
-    }
-
     // some encoders
     public void encoders(int targetToPlace) {
         FL.setTargetPosition(targetToPlace);
@@ -117,43 +100,24 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         DCM.setPower(0);
     }
 
-    // claw
-    public void claw(String closeOpen) {
-        if (closeOpen  == "close") {
-            CM.setPower(1);
-            sleep(500);
-            CM.setPower(0);
-        } else if (closeOpen == "open") {
-            CM.setPower(-1);
-            sleep(500);
-            CM.setPower(0);
-        }
+    // pick up or drop object
+    public void grab() {
+        IM.setPower(1);
+
+        sleep(1000);
+
+        IM.setPower(0);
     }
 
-    // extend claw or pull it back in
-//    public void extend() {
-//        servo.setPosition(1);
-//    }
-//    public void pull() {
-//        servo.setPosition(0);
-//    }
-//
-//    // grab or drop objects
-//    public void grab() {
-//        extend();
-//        claw("close");
-//        pull();
-//    }
-//
-//    public void drop() {
-//        extend();
-//        claw("open");
-//        pull();
-//    }
+    public void drop() {
+        IM.setPower(-1);
 
-    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, CM;
+        sleep(1000);
 
-//    Servo servo, servo2;
+        IM.setPower(0);
+    }
+
+    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, IM;
 
     methodForEncoders encoders = new methodForEncoders();
 
@@ -168,9 +132,7 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         RPM = hardwareMap.dcMotor.get("Right Pulley");
         LPM = hardwareMap.dcMotor.get("Left Pulley");
         DCM = hardwareMap.dcMotor.get("Duck");
-        CM = hardwareMap.dcMotor.get("Claw");
-//        servo = hardwareMap.servo.get("daServo");
-//        servo2 = hardwareMap.servo.get("daServo2");
+        IM = hardwareMap.dcMotor.get("Intake");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LPM.setDirection(DcMotor.Direction.REVERSE);
@@ -178,35 +140,17 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         waitForStart();
 
         /** Strategy:
-         * Next deliver a duck from the carousel to the floor
+         * Deliver a duck from the carousel to the floor
          * Park completely in warehouse
          */
 
-        int Target = encoders.calculateToPlace(1, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "right");
-        Target = encoders.calculateToPlace(1, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "left");
-        Target = encoders.calculateToPlace(1, 1338, 5);
+        turn(1200, "right");
+        int Target = encoders.calculateToPlace(5);
         encoders(-Target);
+
         spinDuck(1000);
 
-        Target = encoders.calculateToPlace(1, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "left");
-        Target = encoders.calculateToPlace(1, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "left");
-        Target = encoders.calculateToPlace(1, 1338, 5);
-        encoders(Target);
-
-        turn(1500, "right");
-        Target = encoders.calculateToPlace(8, 1338, 5);
+        Target = encoders.calculateToPlace(10);
         encoders(Target);
     }
 }
