@@ -12,10 +12,10 @@ public class autonomousCodeForRedRight extends LinearOpMode {
 
     // move forward or backward
     public void goForward(int tIme) {
-        FR.setPower(1);
-        FL.setPower(1);
-        BR.setPower(1);
-        BL.setPower(1);
+        FR.setPower(0.75);
+        FL.setPower(0.75);
+        BR.setPower(0.75);
+        BL.setPower(0.75);
 
         if (tIme != 0) {
             sleep(tIme);
@@ -83,7 +83,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        sleep(500);
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
 
         FL.setPower(0);
         FR.setPower(0);
@@ -93,31 +94,14 @@ public class autonomousCodeForRedRight extends LinearOpMode {
 
     // duck carousel spinner
     public void spinDuck(int tIme) {
-        DCM.setPower(-1);
+        DCM.setPower(-0.5);
 
         sleep(tIme);
 
         DCM.setPower(0);
     }
 
-    // pick up or drop object
-    public void grab() {
-        IM.setPower(1);
-
-        sleep(1000);
-
-        IM.setPower(0);
-    }
-
-    public void drop() {
-        IM.setPower(-1);
-
-        sleep(1000);
-
-        IM.setPower(0);
-    }
-
-    DcMotor FR, FL, BR, BL, RPM, LPM, DCM, IM;
+    DcMotor FR, FL, BR, BL, DCM;
 
     methodForEncoders encoders = new methodForEncoders();
 
@@ -129,13 +113,9 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("Front Right");
         BL = hardwareMap.dcMotor.get("Back Left");
         BR = hardwareMap.dcMotor.get("Back Right");
-        RPM = hardwareMap.dcMotor.get("Right Pulley");
-        LPM = hardwareMap.dcMotor.get("Left Pulley");
         DCM = hardwareMap.dcMotor.get("Duck");
-        IM = hardwareMap.dcMotor.get("Intake");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
-        LPM.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
@@ -144,13 +124,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
          * Park completely in warehouse
          */
 
-        turn(600, "right");
-        int Target = encoders.calculateToPlace(5);
-        encoders(-Target);
-
-        spinDuck(1000);
-
-        Target = encoders.calculateToPlace(10);
-        encoders(Target);
+        goForward(190);
+        turn(1400, "right");
+        goForward(2000);
     }
 }
