@@ -25,22 +25,12 @@ public class teleOpCode extends LinearOpMode {
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                // for speed of robot
-                double speed = 0.7;
-
-                if (gamepad1.dpad_up) {
-                    speed += 0.1;
-                }
-
-                if (gamepad1.dpad_down) {
-                    speed -= 0.1;
-                }
 
                 // move robot
-                FR.setPower(gamepad1.right_stick_y * speed);
-                BR.setPower(gamepad1.right_stick_y * speed);
-                FL.setPower(gamepad1.left_stick_y * speed);
-                BL.setPower(gamepad1.left_stick_y * speed);
+                FR.setPower(gamepad1.right_stick_y * .5);
+                BR.setPower(gamepad1.right_stick_y * .5);
+                FL.setPower(gamepad1.left_stick_y * .5);
+                BL.setPower(gamepad1.left_stick_y * .5);
 
                 if (gamepad1.b) {
                     DCM.setPower(-0.5);
