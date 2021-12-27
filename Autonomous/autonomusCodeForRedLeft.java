@@ -118,15 +118,5 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         BL.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
-
-        /** Strategy:
-         * Deliver a duck from the carousel to the floor
-         * Park completely in warehouse
-         */
-
-
-        goForward(1000);
-        turn(1400, "right");
-        goForward(2);
     }
 }
