@@ -118,11 +118,5 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         BL.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
-
-        /** Strategy:
-         * Park completely in warehouse
-         */
-
-        goForward(3000);
     }
 }
