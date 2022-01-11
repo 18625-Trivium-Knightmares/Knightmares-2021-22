@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 @Autonomous
 public class autonomousCodeForBlueLeft extends LinearOpMode {
 
-    // move forward or backward
+     // move forward or backward
     public void goForward(int tIme) {
         FR.setPower(0.75);
         FL.setPower(0.75);
@@ -36,6 +36,29 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         if (tIme != 0) {
             sleep(tIme);
 
+            FR.setPower(0);
+            FL.setPower(0);
+            BR.setPower(0);
+            BL.setPower(0);
+        }
+    }
+
+    // go from side to side
+    public void sideToSide(int tIme, String direction) {
+        if (direction == "right") {
+            FR.setPower(-1);
+            BL.setPower(-1);
+            FL.setPower(1);
+            BR.setPower(1);
+        } else if (direction == "left") {
+            FR.setPower(1);
+            BL.setPower(1);
+            BR.setPower(-1);
+            FL.setPower(-1);
+        }
+
+        if (tIme != 0) {
+            sleep(tIme);
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -101,7 +124,30 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         DCM.setPower(0);
     }
 
-    DcMotor FR, FL, BR, BL, DCM;
+    // arm
+    public void arm(String direction) {
+        if (direction == "foward") {
+            AM.setPower(1);
+        } else if (direction == "back") {
+            AM.setPower(-1);
+        }
+
+        sleep(500);
+
+        AM.setPower(0);
+    }
+
+    // hand
+    public void hand(String openOrClose) {
+        if (openOrClose == "open") {
+            hand.setPosition(90);
+        } else if (openOrClose == "close") {
+            hand.setPosition(0);
+        }
+    }
+
+    DcMotor FR, FL, BR, BL, DCM, AM;
+    Servo hand;
 
     methodForEncoders encoders = new methodForEncoders();
 
