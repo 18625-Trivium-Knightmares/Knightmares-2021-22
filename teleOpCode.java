@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 
 public class teleOpCode extends LinearOpMode {
-    DcMotor FR, FL, BR, BL, DCM, EJ;
+    DcMotor FR, FL, BR, BL, DCM, AM;
     Servo CS;
 
     @Override
@@ -19,7 +19,7 @@ public class teleOpCode extends LinearOpMode {
         BR = hardwareMap.dcMotor.get("Back Right");
         BL = hardwareMap.dcMotor.get("Back Left");
         DCM = hardwareMap.dcMotor.get("Duck");
-        EJ = hardwareMap.dcMotor.get("Elbow Joint");
+        AM = hardwareMap.dcMotor.get("Arm Motor");
         CS = hardwareMap.servo.get("Claw");
         FR.setDirection(DcMotor.Direction.REVERSE);
         BR.setDirection(DcMotor.Direction.REVERSE);
@@ -40,7 +40,7 @@ public class teleOpCode extends LinearOpMode {
                     BL.setPower(gamepad1.left_stick_x * .5);
                     FL.setPower(-gamepad1.left_stick_x * .5);
                     BR.setPower(-gamepad1.left_stick_x * .5);
-                    
+
                     if (gamepad1.left_stick_x == 0) {
                         FR.setPower(0);
                         BR.setPower(0);
@@ -73,7 +73,7 @@ public class teleOpCode extends LinearOpMode {
                     DCM.setPower(0);
                 }
 
-                EJ.setPower(gamepad1.right_stick_x);
+                AM.setPower(gamepad1.right_stick_x * .5);
 
                 if (gamepad1.a) {
                     CS.setPosition(5);
