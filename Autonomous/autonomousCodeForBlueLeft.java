@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.methodForEncoders;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 @Autonomous
 public class autonomousCodeForBlueLeft extends LinearOpMode {
 
-     // move forward or backward
+    // move forward or backward
     public void goForward(int tIme) {
         FR.setPower(0.75);
         FL.setPower(0.75);
@@ -140,14 +141,14 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
     // hand
     public void hand(String openOrClose) {
         if (openOrClose == "open") {
-            hand.setPosition(90);
+            CS.setPosition(90);
         } else if (openOrClose == "close") {
-            hand.setPosition(0);
+            CS.setPosition(0);
         }
     }
 
     DcMotor FR, FL, BR, BL, DCM, AM;
-    Servo hand;
+    Servo CS;
 
     methodForEncoders encoders = new methodForEncoders();
 
@@ -160,6 +161,8 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         BL = hardwareMap.dcMotor.get("Back Left");
         BR = hardwareMap.dcMotor.get("Back Right");
         DCM = hardwareMap.dcMotor.get("Duck");
+        AM = hardwareMap.dcMotor.get("Arm Motor");
+        CS = hardwareMap.servo.get("Claw");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
