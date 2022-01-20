@@ -34,46 +34,70 @@ public class teleOpCode extends LinearOpMode {
                 BR.setPower(gamepad1.right_stick_y * .5);
                 FL.setPower(gamepad1.left_stick_y * .5);
                 BL.setPower(gamepad1.left_stick_y * .5);
-
-                if (gamepad1.left_stick_x > 0) {
-                    FR.setPower(gamepad1.left_stick_x * .5);
-                    BL.setPower(gamepad1.left_stick_x * .5);
-                    FL.setPower(-gamepad1.left_stick_x * .5);
-                    BR.setPower(-gamepad1.left_stick_x * .5);
-
-                    if (gamepad1.left_stick_x == 0) {
-                        FR.setPower(0);
-                        BR.setPower(0);
-                        BL.setPower(0);
-                        BR.setPower(0);
-                    }
-                } else if (gamepad1.left_stick_x < 0) {
-                    FR.setPower(-gamepad1.left_stick_x * .5);
-                    BL.setPower(-gamepad1.left_stick_x * .5);
-                    FL.setPower(gamepad1.left_stick_x * .5);
-                    BR.setPower(gamepad1.left_stick_x * .5);
-
-                    if (gamepad1.left_stick_x == 0) {
-                        FR.setPower(0);
-                        BR.setPower(0);
-                        BL.setPower(0);
-                        BR.setPower(0);
-                    }
+                
+                if (gamepad1.right_trigger != 0) {
+                    FR.setPower(.5);
+                    BL.setPower(.5);
+                    FL.setPower(-.5);
+                    BR.setPower(-.5);
                 }
 
-                if (gamepad1.b) {
-                    DCM.setPower(-0.5);
+                if (gamepad1.left_trigger != 0) {
+                    FR.setPower(-.5);
+                    BL.setPower(-.5);
+                    FL.setPower(.5);
+                    BR.setPower(.5);
                 }
+
+//                if (gamepad1.left_stick_x > 0) {
+//                    FR.setPower(gamepad1.left_stick_x * .5);
+//                    BL.setPower(gamepad1.left_stick_x * .5);
+//                    FL.setPower(-gamepad1.left_stick_x * .5);
+//                    BR.setPower(-gamepad1.left_stick_x * .5);
+//
+//                    if (gamepad1.left_stick_x == 0) {
+//                        FR.setPower(0);
+//                        BR.setPower(0);
+//                        BL.setPower(0);
+//                        BR.setPower(0);
+//                    }
+//                } else if (gamepad1.left_stick_x < 0) {
+//                    FR.setPower(-gamepad1.left_stick_x * .5);
+//                    BL.setPower(-gamepad1.left_stick_x * .5);
+//                    FL.setPower(gamepad1.left_stick_x * .5);
+//                    BR.setPower(gamepad1.left_stick_x * .5);
+//
+//                    if (gamepad1.left_stick_x == 0) {
+//                        FR.setPower(0);
+//                        BR.setPower(0);
+//                        BL.setPower(0);
+//                        BR.setPower(0);
+//                    }
+//                }
+
+//                if (gamepad1.b) {
+//                    DCM.setPower(-0.5);
+//                }
+//
+//                if (gamepad1.right_bumper) {
+//                    DCM.setPower(0.5);
+//                }
+//
+//                if (gamepad1.x) {
+//                    DCM.setPower(0);
+//                }
 
                 if (gamepad1.right_bumper) {
-                    DCM.setPower(0.5);
+                    AM.setPower(.5);
+                    sleep(500);
+                    AM.setPower(0);
                 }
-
-                if (gamepad1.x) {
-                    DCM.setPower(0);
+                if (gamepad1.left_bumper) {
+                    AM.setPower(-.5);
+                    sleep(500);
+                    AM.setPower(0);
                 }
-
-                AM.setPower(gamepad1.right_stick_x * .5);
+//                AM.setPower(gamepad1.right_stick_x * .5);
 
                 if (gamepad1.a) {
                     CS.setPosition(5);
