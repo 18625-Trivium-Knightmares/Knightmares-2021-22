@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 
 
 @Autonomous
-public class autonomousCodeForRedRight extends LinearOpMode {
+public class autonomousCodeForRedLeft extends LinearOpMode {
 
     // move forward or backward
     public void goForward(int tIme) {
