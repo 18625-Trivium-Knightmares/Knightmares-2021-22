@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.methodForEncoders;
 
+import java.lang.annotation.Target;
+
 
 @Autonomous
 public class autonomousCodeForBlueLeft extends LinearOpMode {
@@ -44,29 +46,6 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         }
     }
 
-    // go from side to side
-    public void sideToSide(int tIme, String direction) {
-        if (direction == "right") {
-            FR.setPower(-1);
-            BL.setPower(-1);
-            FL.setPower(1);
-            BR.setPower(1);
-        } else if (direction == "left") {
-            FR.setPower(1);
-            BL.setPower(1);
-            BR.setPower(-1);
-            FL.setPower(-1);
-        }
-
-        if (tIme != 0) {
-            sleep(tIme);
-            FR.setPower(0);
-            FL.setPower(0);
-            BR.setPower(0);
-            BL.setPower(0);
-        }
-    }
-
     // turn
     public void turn(int tIme, String direction) {
         if (direction == "right") {
@@ -97,10 +76,10 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         BL.setTargetPosition(targetToPlace);
         BR.setTargetPosition(targetToPlace);
 
-        FL.setPower(0.5);
-        FR.setPower(0.5);
-        BL.setPower(0.5);
-        BR.setPower(0.5);
+        FL.setPower(-0.5);
+        FR.setPower(-0.5);
+        BL.setPower(-0.5);
+        BR.setPower(-0.5);
 
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -166,6 +145,30 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
+//        CS.setPosition(1);
+
         waitForStart();
+
+        int targetToPlace = encoders.calculateToPlaceDistance(5);
+        encoders(targetToPlace);
+
+        FR.setPower(0.5);
+        BR.setPower(0.5);
+        FL.setPower(-0.5);
+        FR.setPower(-0.5);
+
+        sleep(1000);
+
+        FR.setPower(0);
+        BR.setPower(0);
+        FL.setPower(0);
+        FR.setPower(0);
+
+        targetToPlace = encoders.calculateToPlaceDistance(5);
+        encoders(targetToPlace);
+
+
+
+//        turn(1000, "right");
     }
 }
