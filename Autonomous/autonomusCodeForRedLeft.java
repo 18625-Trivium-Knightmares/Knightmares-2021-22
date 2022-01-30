@@ -11,6 +11,30 @@ import org.firstinspires.ftc.teamcode.methodForEncoders;
 @Autonomous
 public class autonomousCodeForRedLeft extends LinearOpMode {
 
+    // start encoders
+    public void startEncoders() {
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    // exit encoders
+    public void exitEncoders() {
+        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    // restart encoders
+    public void resetEncoders() {
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
     // move forward or backward
     public void goForward(int tIme) {
         FR.setPower(0.75);
@@ -18,9 +42,9 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         BR.setPower(0.75);
         BL.setPower(0.75);
 
-        if (tIme != 0) {
-            sleep(tIme);
-
+        if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
+            sleep(tIme); // FORWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -29,37 +53,14 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
     }
 
     public void goBackward(int tIme) {
-        FR.setPower(-1);
-        FL.setPower(-1);
-        BR.setPower(-1);
-        BL.setPower(-1);
+        FR.setPower(-0.75);
+        FL.setPower(-0.75);
+        BR.setPower(-0.75);
+        BL.setPower(-0.75);
 
-        if (tIme != 0) {
-            sleep(tIme);
-
-            FR.setPower(0);
-            FL.setPower(0);
-            BR.setPower(0);
-            BL.setPower(0);
-        }
-    }
-
-    // go from side to side
-    public void sideToSide(int tIme, String direction) {
-        if (direction == "right") {
-            FR.setPower(-1);
-            BL.setPower(-1);
-            FL.setPower(1);
-            BR.setPower(1);
-        } else if (direction == "left") {
-            FR.setPower(1);
-            BL.setPower(1);
-            BR.setPower(-1);
-            FL.setPower(-1);
-        }
-
-        if (tIme != 0) {
-            sleep(tIme);
+        if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
+            sleep(tIme); // BACKWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -81,21 +82,20 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
             BL.setPower(-0.5);
         }
 
-        if (tIme != 0) {
-            sleep(tIme);
-            FL.setPower(0);
+        if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT
+            sleep(tIme); // TURNS FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
-            BL.setPower(0);
+            FL.setPower(0);
             BR.setPower(0);
+            BL.setPower(0);
         }
     }
 
     // some encoders
     public void encoders(int targetToPlace) {
-        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        startEncoders();
 
         FL.setTargetPosition(targetToPlace);
         FR.setTargetPosition(targetToPlace);
@@ -121,37 +121,6 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         BR.setPower(0);
     }
 
-    // duck carousel spinner
-    public void spinDuck(int tIme) {
-        DCM.setPower(-0.5);
-
-        sleep(tIme);
-
-        DCM.setPower(0);
-    }
-
-    // arm
-    public void arm(String direction) {
-        if (direction == "foward") {
-            AM.setPower(1);
-        } else if (direction == "back") {
-            AM.setPower(-1);
-        }
-
-        sleep(500);
-
-        AM.setPower(0);
-    }
-
-    // hand
-    public void hand(String openOrClose) {
-        if (openOrClose == "open") {
-            CS.setPosition(90);
-        } else if (openOrClose == "close") {
-            CS.setPosition(0);
-        }
-    }
-
     DcMotor FR, FL, BR, BL, DCM, AM;
     Servo CS;
 
@@ -170,51 +139,21 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
-        CS.setPosition(1);  //
+        resetEncoders();
 
         waitForStart();
 
-        AM.setPower(0.4); //
-
-        sleep(1500); //
-
+        // GO FORWARD 5IN
         int targetToPlace = encoders.calculateToPlaceDistance(5);
         encoders(targetToPlace);
 
-        CS.setPosition(0.02); //
+        // TUNS THE DUCK CAROUSEL
+        DCM.setPower(0.5);
+        sleep(3000);
+        DCM.setPower(0);
 
-        sleep(100); //
-
-        CS.setPosition(1); //
-
-        sleep(500); //
-
-        CS.setPosition(0.5); //
-
-        AM.setPower(0.4); //
-
-        sleep(1500); //
-
-        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        sleep(1000);
-
-        FR.setPower(-0.5);
-        BR.setPower(-0.5);
-        FL.setPower(0.5);
-        FR.setPower(0.5);
-
-        sleep(1000);
-
-        FR.setPower(0);
-        BR.setPower(0);
-        FL.setPower(0);
-        FR.setPower(0);
-
-        targetToPlace = encoders.calculateToPlaceDistance(10);
+        // REVERS INTO WAREHOUSE
+        targetToPlace = encoders.calculateToPlaceDistance(20);
         encoders(targetToPlace);
     }
 }
