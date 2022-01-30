@@ -92,6 +92,12 @@ public class autonomousCodeForRedRight extends LinearOpMode {
 
     // some encoders
     public void encoders(int targetToPlace) {
+
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         FL.setTargetPosition(targetToPlace);
         FR.setTargetPosition(targetToPlace);
         BL.setTargetPosition(targetToPlace);
@@ -156,15 +162,81 @@ public class autonomousCodeForRedRight extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // All motors
-        FL = hardwareMap.dcMotor.get("Front Left");
-        FR = hardwareMap.dcMotor.get("Front Right");
-        BL = hardwareMap.dcMotor.get("Back Left");
-        BR = hardwareMap.dcMotor.get("Back Right");
+        FL = hardwareMap.dcMotor.get("Front Right");
+        FR = hardwareMap.dcMotor.get("Front Left");
+        BL = hardwareMap.dcMotor.get("Back Right");
+        BR = hardwareMap.dcMotor.get("Back Left");
         DCM = hardwareMap.dcMotor.get("Duck");
         CS = hardwareMap.servo.get("Claw");
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
+        CS.setPosition(1);
+
         waitForStart();
+
+        AM.setPower(0.4);
+
+        sleep(1500);
+
+        int targetToPlace = encoders.calculateToPlaceDistance(7);
+        encoders(targetToPlace);
+
+        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        sleep(1000);
+
+        FR.setPower(1);
+        BR.setPower(1);
+        FL.setPower(-1);
+        FR.setPower(-1);
+
+        sleep(1800);
+
+        FR.setPower(0);
+        BR.setPower(0);
+        FL.setPower(0);
+        FR.setPower(0);
+
+        sleep(100);
+
+        CS.setPosition(0.02);
+
+        sleep(100);
+
+        CS.setPosition(1);
+
+        sleep(500);
+
+        CS.setPosition(0.5);
+
+        AM.setPower(0.4);
+
+        sleep(1500);
+
+//        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//        sleep(1000);
+//
+//        FR.setPower(1);
+//        BR.setPower(1);
+//        FL.setPower(-1);
+//        FR.setPower(-1);
+//
+//        sleep(1800);
+//
+//        FR.setPower(0);
+//        BR.setPower(0);
+//        FL.setPower(0);
+//        FR.setPower(0);
+//
+//        targetToPlace = encoders.calculateToPlaceDistance(7);
+//        encoders(targetToPlace);
     }
 }
