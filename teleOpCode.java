@@ -50,11 +50,11 @@ public class teleOpCode extends LinearOpMode {
                 BR.setPower(gamepad1.left_stick_y * 0.5);
 
                 if (gamepad1.left_bumper) {
-                    DCM.setPower(-1);
+                    DCM.setPower(-0.5);
                 }
 
                 if (gamepad1.right_bumper) {
-                    DCM.setPower(1);
+                    DCM.setPower(0.5);
                 }
 
                 if (gamepad1.a) {
@@ -97,6 +97,10 @@ public class teleOpCode extends LinearOpMode {
 
                 if (gamepad1.b) {
                     CS.setPosition(1);
+                }
+
+                if (gamepad1.dpad_up) {
+                    CS.setPosition(0.5);
                 }
                 telemetry.addData("x is pressed; ", gamepad1.x);
                 telemetry.addData("x is pressed; ", gamepad1.b);
