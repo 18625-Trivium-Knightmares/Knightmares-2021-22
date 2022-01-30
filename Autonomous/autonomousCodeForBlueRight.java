@@ -92,6 +92,11 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
 
     // some encoders
     public void encoders(int targetToPlace) {
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         FL.setTargetPosition(targetToPlace);
         FR.setTargetPosition(targetToPlace);
         BL.setTargetPosition(targetToPlace);
@@ -166,5 +171,30 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         BL.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
+
+        int targetToPlace = encoders.calculateToPlaceDistance(5);
+        encoders(targetToPlace);
+
+        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        sleep(1000);
+
+        FR.setPower(-0.5);
+        BR.setPower(-0.5);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+
+        sleep(1000);
+
+        FR.setPower(0);
+        BR.setPower(0);
+        FL.setPower(0);
+        FR.setPower(0);
+
+        targetToPlace = encoders.calculateToPlaceDistance(10);
+        encoders(targetToPlace);
     }
 }
