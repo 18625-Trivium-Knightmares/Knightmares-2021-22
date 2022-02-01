@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.methodForEncoders;
+//import org.firstinspires.ftc.teamcode.methodForEncoders;
 
 
 @Autonomous
-public class haydensAuto extends LinearOpMode {
+class LineCodeAutoRightRed extends LinearOpMode {
 
     DcMotor FR, FL, BR, BL, DCM, AM;
     Servo CS;
@@ -49,6 +49,7 @@ public class haydensAuto extends LinearOpMode {
 
         //RAM TIME
         int ramTIME = (int) 2500;
+        int distance = (int) (7/3.77953*3.1415926535*537.689);
 
         //FORWARD SO THE ARM DOESN'T GET STUCK ON WALL
         FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -84,9 +85,6 @@ public class haydensAuto extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // set the position you want it to go to
         BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //SETTING
-        int distance = (int) (7*(90/3.14159));
-
         //FORWARD 7IN
         FL.setTargetPosition(distance);
         FR.setTargetPosition(distance);
@@ -118,23 +116,17 @@ public class haydensAuto extends LinearOpMode {
 
         //LEFT TURN
         int oneROTATION = (int) 537.69;
-        FL.setTargetPosition(-oneROTATION);
-        FR.setTargetPosition(oneROTATION);
-        BL.setTargetPosition(-oneROTATION);
-        BR.setTargetPosition(oneROTATION);
+        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        FL.setPower(0.5);
+        FL.setPower(-0.5);
+        BL.setPower(-0.5);
         FR.setPower(0.5);
-        BL.setPower(0.5);
         BR.setPower(0.5);
 
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
-        }
+        sleep(1000);
 
         FL.setPower(0);
         FR.setPower(0);
@@ -142,32 +134,31 @@ public class haydensAuto extends LinearOpMode {
         BR.setPower(0);
 
         //CLAW OPEN
-        CS.setPosition(1); // right here you had 0.5, for some reason that doesn't work idk why,
+        CS.setPosition(0.02); // right here you had 0.5, for some reason that doesn't work idk why,
         // in fact for the kill button in teleOp i actually had the dpad_up set it to position 0.5, lol
 
+        sleep(500);
+
+        CS.setPosition(0.5);
+
         //REVERSE
-        FL.setTargetPosition(oneROTATION);
-        FR.setTargetPosition(-oneROTATION);
-        BL.setTargetPosition(oneROTATION);
-        BR.setTargetPosition(-oneROTATION);
-
         FL.setPower(0.5);
-        FR.setPower(0.5);
         BL.setPower(0.5);
-        BR.setPower(0.5);
+        FR.setPower(-0.5);
+        BR.setPower(-0.5);
 
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
-        }
+        sleep(1000);
 
         FL.setPower(0);
         FR.setPower(0);
         BL.setPower(0);
         BR.setPower(0);
+
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         FL.setTargetPosition(-distance);
         FR.setTargetPosition(-distance);
@@ -193,23 +184,17 @@ public class haydensAuto extends LinearOpMode {
         BR.setPower(0);
 
         //LEFT TURN
-        FL.setTargetPosition(-oneROTATION / 4);
-        FR.setTargetPosition(oneROTATION / 4);
-        BL.setTargetPosition(-oneROTATION / 4);
-        BR.setTargetPosition(oneROTATION / 4);
+        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        FL.setPower(0.5);
+        FL.setPower(-0.5);
+        BL.setPower(-0.5);
         FR.setPower(0.5);
-        BL.setPower(0.5);
         BR.setPower(0.5);
 
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
-        }
+        sleep(1000);
 
         FL.setPower(0);
         FR.setPower(0);
@@ -217,11 +202,6 @@ public class haydensAuto extends LinearOpMode {
         BR.setPower(0);
 
         //RAM INTO WAREHOUSE
-        FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         FR.setPower(-0.75);
         BR.setPower(-0.75);
         FL.setPower(-0.75);
