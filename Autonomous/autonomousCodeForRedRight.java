@@ -136,6 +136,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         BR = hardwareMap.dcMotor.get("Back Left");
         DCM = hardwareMap.dcMotor.get("Duck");
         CS = hardwareMap.servo.get("Claw");
+        AM = hardwareMap.dcMotor.get("Arm Motor");
+
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
@@ -157,7 +159,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         AM.setPower(0);
 
         // GO FORWARD 7IN
-        int targetToPlace = encoders.calculateToPlaceDistance(7);
+//        int targetToPlace = encoders.calculateToPlaceDistance(7);
+        int targetToPlace = (int) (7*(90/3.14159));
         encoders(targetToPlace);
 
         exitEncoders();
