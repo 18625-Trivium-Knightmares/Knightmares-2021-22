@@ -36,15 +36,15 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
     }
 
     // move forward or backward
-    public void goForward(int tIme) {
-        FR.setPower(0.75);
-        FL.setPower(0.75);
-        BR.setPower(0.75);
-        BL.setPower(0.75);
+    public void goForward(int tIme, int power) {
+        FR.setPower(power);
+        FL.setPower(power);
+        BR.setPower(power);
+        BL.setPower(power);
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // FORWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-                         // THE MOTORS TO THE POWER INDEFINITELY
+            // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -52,15 +52,15 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         }
     }
 
-    public void goBackward(int tIme) {
-        FR.setPower(-0.75);
-        FL.setPower(-0.75);
-        BR.setPower(-0.75);
-        BL.setPower(-0.75);
+    public void goBackward(int tIme, double power) {
+        FR.setPower(-power);
+        FL.setPower(-power);
+        BR.setPower(-power);
+        BL.setPower(-power);
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // BACKWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-                         // THE MOTORS TO THE POWER INDEFINITELY
+            // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -84,7 +84,7 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT
             sleep(tIme); // TURNS FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-                         // THE MOTORS TO THE POWER INDEFINITELY
+            // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -148,7 +148,29 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         waitForStart();
 
-        // SO THE ARM DOESN'T GET STUCK
+        int targetToPlace = (int) ((537.689/(3.77953*3.1415926535))*16);
+        encoders(targetToPlace);
+
+        exitEncoders();
+
+        AM.setPower(-0.4);
+        sleep(2000);
+        AM.setPower(0);
+
+        turn(1200, "left");
+
+        CS.setPosition(0.02);
+        sleep(500);
+        CS.setPosition(1);
+        sleep(500);
+        CS.setPosition(0.5);
+
+        goBackward(1000, 0.75);
+
+        AM.setPower(0.4);
+        sleep(2000);
+        AM.setPower(0);
+/*        // SO THE ARM DOESN'T GET STUCK
         goForward(400);
 
         // THIS SWINGS THE ARM OUT
@@ -160,17 +182,16 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         // GO FORWARD 7IN
 //        int targetToPlace = encoders.calculateToPlaceDistance(7);
-        int targetToPlace = (int) (5*(90/3.14159));
-
+        int targetToPlace = (int) (7/3.77953*3.1415926535*537.689);
         encoders(targetToPlace);
 
         exitEncoders();
 
         sleep(1000);
 
-        // TURNS RIGHT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
+        // TURNS LEFT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
         // THE STUFF BELLOW IT AND GET RID OF THE METHOD
-        turn(1800, "right");
+        turn(1800, "left");
 
 //        FR.setPower(1);
 //        BR.setPower(1);
@@ -206,9 +227,9 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         AM.setPower(0);
 
-        // TURNS LEFT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
+        // TURNS RIGHT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
         // THE STUFF BELLOW IT AND GET RID OF THE METHOD
-        turn(500, "left");
+        turn(500, "right");
 
 //        FR.setPower(-1);
 //        BR.setPower(-1);
@@ -222,6 +243,6 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 //        FL.setPower(0);
 //        FR.setPower(0);
 
-        goBackward(2000); // REVERSE
+        goBackward(2000); // REVERSE*/
     }
 }
