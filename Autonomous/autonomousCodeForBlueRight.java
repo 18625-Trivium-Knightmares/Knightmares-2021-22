@@ -36,11 +36,11 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
     }
 
     // move forward or backward
-    public void goForward(int tIme) {
-        FR.setPower(0.75);
-        FL.setPower(0.75);
-        BR.setPower(0.75);
-        BL.setPower(0.75);
+    public void goForward(int tIme, int power) {
+        FR.setPower(power);
+        FL.setPower(power);
+        BR.setPower(power);
+        BL.setPower(power);
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // FORWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
@@ -52,11 +52,11 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         }
     }
 
-    public void goBackward(int tIme) {
-        FR.setPower(-0.75);
-        FL.setPower(-0.75);
-        BR.setPower(-0.75);
-        BL.setPower(-0.75);
+    public void goBackward(int tIme, double power) {
+        FR.setPower(-power);
+        FL.setPower(-power);
+        BR.setPower(-power);
+        BL.setPower(-power);
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // BACKWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
@@ -102,10 +102,10 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         BL.setTargetPosition(targetToPlace);
         BR.setTargetPosition(targetToPlace);
 
-        FL.setPower(0.5);
-        FR.setPower(0.5);
-        BL.setPower(0.5);
-        BR.setPower(0.5);
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
 
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -136,24 +136,97 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
         BR = hardwareMap.dcMotor.get("Back Left");
         DCM = hardwareMap.dcMotor.get("Duck");
         CS = hardwareMap.servo.get("Claw");
+        AM = hardwareMap.dcMotor.get("Arm Motor");
+
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
+
+        int rightAngle = (int) (537.689 / 2 );
+
+        // THIS CLOSES THE CLAW
+        CS.setPosition(1);
 
         resetEncoders();
 
         waitForStart();
 
-        // GO FORWARD 5IN
-        int targetToPlace = encoders.calculateToPlaceDistance(5);
+        int targetToPlace = (int) ((537.689/(3.77953*3.1415926535))*16);
         encoders(targetToPlace);
 
-        // TUNS THE DUCK CAROUSEL
-        DCM.setPower(0.5);
-        sleep(3000);
-        DCM.setPower(0);
+        exitEncoders();
 
-        // REVERS INTO WAREHOUSE
-        targetToPlace = encoders.calculateToPlaceDistance(20);
-        encoders(targetToPlace);
+        AM.setPower(-0.4);
+        sleep(2000);
+        AM.setPower(0);
+
+        resetEncoders();
+        sleep(500);
+        startEncoders();
+
+        FL.setTargetPosition(-rightAngle);
+        FR.setTargetPosition(rightAngle);
+        BL.setTargetPosition(-rightAngle);
+        BR.setTargetPosition(rightAngle);
+
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+//        exitEncoders();
+
+//        turn(1200, "right");
+
+        CS.setPosition(0.02);
+        sleep(500);
+        CS.setPosition(1);
+        sleep(800);
+        CS.setPosition(0.5);
+
+        resetEncoders();
+
+        FL.setTargetPosition(-rightAngle);
+        FR.setTargetPosition(rightAngle);
+        BL.setTargetPosition(-rightAngle);
+        BR.setTargetPosition(rightAngle);
+
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+        exitEncoders();
+
+        goBackward(500, 0.60);
+
+        AM.setPower(0.4);
+        sleep(2000);
+        AM.setPower(0);
     }
 }
