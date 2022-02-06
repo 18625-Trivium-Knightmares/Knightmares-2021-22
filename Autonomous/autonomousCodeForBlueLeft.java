@@ -102,10 +102,10 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         BL.setTargetPosition(targetToPlace);
         BR.setTargetPosition(targetToPlace);
 
-        FL.setPower(0.5);
-        FR.setPower(0.5);
-        BL.setPower(0.5);
-        BR.setPower(0.5);
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
 
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -141,6 +141,8 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
+        int rightAngle = (int) (-537.689 / 2 );
+
         // THIS CLOSES THE CLAW
         CS.setPosition(1);
 
@@ -157,92 +159,74 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         sleep(2000);
         AM.setPower(0);
 
-        turn(1200, "left");
+        resetEncoders();
+        sleep(500);
+        startEncoders();
+
+        FL.setTargetPosition(-rightAngle);
+        FR.setTargetPosition(rightAngle);
+        BL.setTargetPosition(-rightAngle);
+        BR.setTargetPosition(rightAngle);
+
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+//        exitEncoders();
+
+//        turn(1200, "right");
 
         CS.setPosition(0.02);
         sleep(500);
         CS.setPosition(1);
-        sleep(500);
+        sleep(800);
         CS.setPosition(0.5);
 
-        goBackward(1000, 0.75);
+        resetEncoders();
+
+        FL.setTargetPosition(-rightAngle);
+        FR.setTargetPosition(rightAngle);
+        BL.setTargetPosition(-rightAngle);
+        BR.setTargetPosition(rightAngle);
+
+        FL.setPower(0.25);
+        FR.setPower(0.25);
+        BL.setPower(0.25);
+        BR.setPower(0.25);
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (FR.isBusy() || FL.isBusy() || BR.isBusy() || BL.isBusy()) {
+        }
+
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+        exitEncoders();
+
+        goBackward(800, 0.75);
 
         AM.setPower(0.4);
         sleep(2000);
         AM.setPower(0);
-/*        // SO THE ARM DOESN'T GET STUCK
-        goForward(400);
-
-        // THIS SWINGS THE ARM OUT
-        AM.setPower(0.4);
-
-        sleep(1500);
-
-        AM.setPower(0);
-
-        // GO FORWARD 7IN
-//        int targetToPlace = encoders.calculateToPlaceDistance(7);
-        int targetToPlace = (int) (7/3.77953*3.1415926535*537.689);
-        encoders(targetToPlace);
-
-        exitEncoders();
-
-        sleep(1000);
-
-        // TURNS LEFT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
-        // THE STUFF BELLOW IT AND GET RID OF THE METHOD
-        turn(1800, "left");
-
-//        FR.setPower(1);
-//        BR.setPower(1);
-//        FL.setPower(-1);
-//        FR.setPower(-1);
-//
-//        sleep(1800);
-//
-//        FR.setPower(0);
-//        BR.setPower(0);
-//        FL.setPower(0);
-//        FR.setPower(0);
-
-        sleep(100);
-
-        // THIS DROPS THE PRE-LOADED BOX
-        CS.setPosition(0.02);
-
-        sleep(100);
-
-        // ALL THE WAY DOWN TO CS.setPosition(0.5) JUST CLOSES THE CLAW TO A POINT WHERE ITS
-        // NOT IN THE WAY OF THE ARM SWINGING DOWN
-        CS.setPosition(1);
-
-        sleep(500);
-
-        CS.setPosition(0.5);
-
-        // ARM GOES DOWN
-        AM.setPower(0.4);
-
-        sleep(1500);
-
-        AM.setPower(0);
-
-        // TURNS RIGHT BUT IF IT DOESN'T WORK (I HAVE REASON TO BELIEVE IT WONT) I'LL JUST UNCOMMENT
-        // THE STUFF BELLOW IT AND GET RID OF THE METHOD
-        turn(500, "right");
-
-//        FR.setPower(-1);
-//        BR.setPower(-1);
-//        FL.setPower(1);
-//        BL.setPower(1);
-//
-//        sleep(500);
-//
-//        FR.setPower(0);
-//        BR.setPower(0);
-//        FL.setPower(0);
-//        FR.setPower(0);
-
-        goBackward(2000); // REVERSE*/
     }
 }
