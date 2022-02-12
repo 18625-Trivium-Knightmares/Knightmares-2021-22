@@ -32,8 +32,9 @@ public class teleOpCode extends LinearOpMode {
         BR = hardwareMap.dcMotor.get("Back Right");
         BL = hardwareMap.dcMotor.get("Back Left");
         DCM = hardwareMap.dcMotor.get("Duck");
-        AM = hardwareMap.dcMotor.get("Arm Motor");
         CS = hardwareMap.servo.get("Claw");
+        AM = hardwareMap.dcMotor.get("Arm Motor");
+
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
@@ -43,68 +44,55 @@ public class teleOpCode extends LinearOpMode {
 
             while (opModeIsActive()) {
 
-                // move robot
+                // MOVE ROBOT
                 FL.setPower(gamepad1.right_stick_y * 0.5);
                 BL.setPower(gamepad1.right_stick_y * 0.5);
                 FR.setPower(gamepad1.left_stick_y * 0.5);
                 BR.setPower(gamepad1.left_stick_y * 0.5);
 
+                // TURN ON DUCK MOTOR
                 if (gamepad1.left_bumper) {
                     DCM.setPower(-0.5);
                 }
 
+                // TURN ON DUCK MOTOR
                 if (gamepad1.right_bumper) {
                     DCM.setPower(0.5);
                 }
 
+                // TURN OFF DUCK MOTOR
                 if (gamepad1.a) {
                     DCM.setPower(0);
                 }
 
+                // LIFT ARM
                 if (gamepad1.right_trigger != 0) {
-                    int encoderTarget = (int) (0.75 * 1120);
-                    AM.setTargetPosition(encoderTarget);
                     AM.setPower(0.4);
-                    AM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                    while (AM.isBusy()) {
-//                    }
-                    sleep(3000);
+                    sleep(300);
                     AM.setPower(0);
-//                    int rotations = encoders.calculateToPlaceRotations(0.1);
-//                    encoders(rotations);
                 }
 
+                // LOWER ARM
                 if (gamepad1.left_trigger != 0) {
-                    int encoderTarget = (int) (-0.75 * 1120);
-                    AM.setTargetPosition(encoderTarget);
-                    AM.setPower(0.4);
-                    AM.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    sleep(250);
-//                    while (AM.isBusy()) {
-//                    }
-                    AM.setPower(0);
-//                    int rotations = encoders.calculateToPlaceRotations(-0.1);
-//                    encoders(rotations);
-                }
-
-                if (gamepad1.y) {
+                    AM.setPower(-0.4);
+                    sleep(300);
                     AM.setPower(0);
                 }
 
+                // OPEN CLAW
                 if (gamepad1.x) {
-                    CS.setPosition(0.02 );
+                    CS.setPosition(0.02);
                 }
 
+                // CLOSE CLAW
                 if (gamepad1.b) {
                     CS.setPosition(1);
                 }
 
+                // TURN CLAW OFF
                 if (gamepad1.dpad_up) {
                     CS.setPosition(0.5);
                 }
-                telemetry.addData("x is pressed; ", gamepad1.x);
-                telemetry.addData("x is pressed; ", gamepad1.b);
-                telemetry.update();
             }
         }
     }
