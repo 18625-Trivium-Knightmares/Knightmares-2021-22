@@ -150,11 +150,13 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
 
         waitForStart();
 
+        // GO FORWARD 16 IN
         int targetToPlace = (int) ((537.689/(3.77953*3.1415926535))*16);
         encoders(targetToPlace);
 
         exitEncoders();
 
+        // LIFT ARM
         AM.setPower(-0.4);
         sleep(2000);
         AM.setPower(0);
