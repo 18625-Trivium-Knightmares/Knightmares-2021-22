@@ -141,7 +141,8 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
-        int rightAngle = (int) (-537.689 / 2 );
+        int firstTurn = (int)  (-537.689 / 1.5);
+        int secondTurn = (int) (-537.689 / 2);
 
         // THIS CLOSES THE CLAW
         CS.setPosition(1);
@@ -150,11 +151,13 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         waitForStart();
 
+        // GO FORWARD 16 IN
         int targetToPlace = (int) ((537.689/(3.77953*3.1415926535))*16);
         encoders(targetToPlace);
 
         exitEncoders();
 
+        // LIFT ARM UP
         AM.setPower(-0.4);
         sleep(2000);
         AM.setPower(0);
@@ -163,10 +166,11 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         sleep(500);
         startEncoders();
 
-        FL.setTargetPosition(-rightAngle);
-        FR.setTargetPosition(rightAngle);
-        BL.setTargetPosition(-rightAngle);
-        BR.setTargetPosition(rightAngle);
+        // TURN TO THE RIGHT A BIT SO I CAN DROP OFF THE FREIGHT
+        FL.setTargetPosition(-firstTurn);
+        FR.setTargetPosition(firstTurn);
+        BL.setTargetPosition(-firstTurn);
+        BR.setTargetPosition(firstTurn);
 
         FL.setPower(0.25);
         FR.setPower(0.25);
@@ -186,10 +190,7 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         BL.setPower(0);
         BR.setPower(0);
 
-//        exitEncoders();
-
-//        turn(1200, "right");
-
+        // DROP FREIGHT
         CS.setPosition(0.02);
         sleep(500);
         CS.setPosition(1);
@@ -198,15 +199,16 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         resetEncoders();
 
-        FL.setTargetPosition(-rightAngle);
-        FR.setTargetPosition(rightAngle);
-        BL.setTargetPosition(-rightAngle);
-        BR.setTargetPosition(rightAngle);
+        // TURN A BIT MORE SO IT CAN REVERSE INTO THE WAREHOUSE
+        FL.setTargetPosition(-secondTurn);
+        FR.setTargetPosition(secondTurn);
+        BL.setTargetPosition(-secondTurn);
+        BR.setTargetPosition(secondTurn);
 
-        FL.setPower(0.25);
-        FR.setPower(0.25);
-        BL.setPower(0.25);
-        BR.setPower(0.25);
+        FL.setPower(0.2);
+        FR.setPower(0.2);
+        BL.setPower(0.2);
+        BR.setPower(0.2);
 
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -223,10 +225,12 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
 
         exitEncoders();
 
-        goBackward(800, 0.75);
+        // REVERSE INTO WAREHOUSE
+        goBackward(900, 0.75);
 
+        // LOWER ARM
         AM.setPower(0.4);
-        sleep(2000);
+        sleep(1000);
         AM.setPower(0);
     }
 }
