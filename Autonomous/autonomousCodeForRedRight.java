@@ -141,8 +141,8 @@ public class autonomousCodeForRedRight extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
-        int firstTurn = (int)  (537.689 / 1.5);
-        int secondTurn = (int) (537.689 / 2);
+        int firstTurn = (int)  (537.689 / 1.8);
+        int secondTurn = (int) (537.689 / 2.5);
 
         // THIS CLOSES THE CLAW
         CS.setPosition(1);
