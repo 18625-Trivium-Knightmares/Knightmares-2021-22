@@ -141,7 +141,7 @@ public class autonomousCodeForBlueLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
-        int firstTurn = (int)  (-537.689 / 1.5);
+        int firstTurn = (int)  (-537.689 / 1.4);
         int secondTurn = (int) (-537.689 / 2);
 
         // THIS CLOSES THE CLAW
