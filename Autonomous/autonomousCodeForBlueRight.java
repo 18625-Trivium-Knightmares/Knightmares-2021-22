@@ -225,10 +225,10 @@ public class autonomousCodeForBlueRight extends LinearOpMode {
 
         exitEncoders();
 
-        goBackward(500, 0.60);
-
         AM.setPower(0.4);
         sleep(2000);
         AM.setPower(0);
+
+        goBackward(500, 0.60);
     }
 }
