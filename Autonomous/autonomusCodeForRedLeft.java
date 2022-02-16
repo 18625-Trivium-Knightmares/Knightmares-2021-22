@@ -44,7 +44,7 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // FORWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-            // THE MOTORS TO THE POWER INDEFINITELY
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -60,7 +60,7 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT GOES
             sleep(tIme); // BACKWARD FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-            // THE MOTORS TO THE POWER INDEFINITELY
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -84,7 +84,7 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
 
         if (tIme != 0) { // IF THIS IS SET TO ANY NUMBER OTHER THAN 0 IT WILL MAKE IT SO THAT IT
             sleep(tIme); // TURNS FOR HOWEVER LONG IT IS SET TO, IF IT'S 0 IT WILL JUST SET
-            // THE MOTORS TO THE POWER INDEFINITELY
+                         // THE MOTORS TO THE POWER INDEFINITELY
             FR.setPower(0);
             FL.setPower(0);
             BR.setPower(0);
@@ -141,7 +141,8 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
 
-        int rightAngle = (int) -(537.689 / 2 );
+        int firstTurn = (int) -(537.689 / 1.4);
+        int secondTurn = (int) -(537.689 / 2);
 
         // THIS CLOSES THE CLAW
         CS.setPosition(1);
@@ -165,10 +166,10 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         sleep(500);
         startEncoders();
 
-        FL.setTargetPosition(-rightAngle);
-        FR.setTargetPosition(rightAngle);
-        BL.setTargetPosition(-rightAngle);
-        BR.setTargetPosition(rightAngle);
+        FL.setTargetPosition(-firstTurn);
+        FR.setTargetPosition(firstTurn);
+        BL.setTargetPosition(-firstTurn);
+        BR.setTargetPosition(firstTurn);
 
         FL.setPower(0.25);
         FR.setPower(0.25);
@@ -188,10 +189,6 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
         BL.setPower(0);
         BR.setPower(0);
 
-//        exitEncoders();
-
-//        turn(1200, "right");
-
         CS.setPosition(0.02);
         sleep(500);
         CS.setPosition(1);
@@ -200,10 +197,10 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
 
         resetEncoders();
 
-        FL.setTargetPosition(-rightAngle);
-        FR.setTargetPosition(rightAngle);
-        BL.setTargetPosition(-rightAngle);
-        BR.setTargetPosition(rightAngle);
+        FL.setTargetPosition(-secondTurn);
+        FR.setTargetPosition(secondTurn);
+        BL.setTargetPosition(-secondTurn);
+        BR.setTargetPosition(secondTurn);
 
         FL.setPower(0.25);
         FR.setPower(0.25);
@@ -225,10 +222,11 @@ public class autonomousCodeForRedLeft extends LinearOpMode {
 
         exitEncoders();
 
-        goBackward(500, 0.60);
-
         AM.setPower(0.4);
         sleep(2000);
         AM.setPower(0);
+
+        goBackward(500, 0.6);
+
     }
 }
